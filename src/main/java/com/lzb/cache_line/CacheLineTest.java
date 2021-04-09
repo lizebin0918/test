@@ -1,4 +1,4 @@
-package com.lzb;
+package com.lzb.cache_line;
 /**
  * 缓存行测试，由于多线程争用导致性能下降<br/>
  * Created on : 2021-03-29 17:26
