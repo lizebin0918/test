@@ -1,4 +1,4 @@
-package com.lzb;
+package com.lzb.interview;
 
 import com.alibaba.fastjson.JSON;
 import sun.misc.Unsafe;
@@ -48,45 +48,5 @@ public class ThreadPrintNumber2 {
         startIndex += length;
         return startIndex;
     }
-
-
-
-    /*private static AtomicReference<Integer> nextIndexReference = new AtomicReference<>(0);
-    public static int nextIndexWithCas() {
-        while (true) {
-            System.out.println("startIndex=" + startIndex);
-            System.out.println("nextIndexReference.get()=" + nextIndexReference.get());
-            startIndex += length;
-            if (nextIndexReference.compareAndSet(startIndex, )) {
-                return startIndex;
-            }
-        }
-    }*/
-
-    /*
-    public static int nextIndexWithCas() {
-        while (true) {
-            int nextIndex = startIndex + length;
-            if (unsafe.compareAndSwapInt(ThreadPrintNumber2.class, startIndexOffset, startIndex, nextIndex)) {
-                return nextIndex;
-            }
-        }
-    }
-
-    private static Unsafe unsafe;
-    private static final long startIndexOffset;
-
-    static {
-        try {
-            // 使用反射获取Unsafe的成员变量theUnsafe
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            //设置为可读取
-            field.setAccessible(true);
-            unsafe = (Unsafe) field.get(null);
-            startIndexOffset = unsafe.objectFieldOffset
-                (ThreadPrintNumber2.class.getDeclaredField("startIndex"));
-        } catch (Exception ex) { throw new Error(ex); }
-    }
-    */
 
 }
