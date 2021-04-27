@@ -13,12 +13,12 @@ import java.util.concurrent.atomic.LongAdder;
  * Created on : 2021-04-24 11:11
  * @author lizebin
  */
-public class LongAdderTeset {
+public class LongAdderTest {
 
     public static void main(String[] args) {
         LongAdder longAdder = new LongAdder();
         longAdder.add(1);
-        LongAdderTeset tester = new LongAdderTeset();
+        LongAdderTest tester = new LongAdderTest();
         /*for (int i=0; i<10; i++) {
             int num = i;
             new Thread(() -> {
@@ -42,7 +42,7 @@ public class LongAdderTeset {
     static {
         try {
             sun.misc.Unsafe UNSAFE = createUnsafe();
-            Class<?> sk = LongAdderTeset.class;
+            Class<?> sk = LongAdderTest.class;
             Class<?> tk = Thread.class;
             threadLocalRandomProbe = UNSAFE.objectFieldOffset
                 (tk.getDeclaredField("threadLocalRandomProbe"));
