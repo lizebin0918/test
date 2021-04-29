@@ -23,8 +23,8 @@ public class MyLinkedBlockingQueue<T> {
     private volatile Node<T> tail = head;
 
     private ReentrantLock lock = new ReentrantLock();
-    private Condition empty = lock.newCondition();
-    private Condition full = lock.newCondition();
+    private Condition notEmpty = lock.newCondition();
+    private Condition notFull = lock.newCondition();
 
     private int capacity;
 
@@ -41,7 +41,7 @@ public class MyLinkedBlockingQueue<T> {
      * @param consumer
      */
     public void forEach(Consumer<T> consumer) {
-        if (isEmpty()) return;
+        if (getNotEmpty()) return;
         Node<T> next = head.next;
         while (Objects.nonNull(next)) {
             consumer.accept(next.value);
@@ -57,12 +57,12 @@ public class MyLinkedBlockingQueue<T> {
         lock.lock();
         Node<T> retNode = null;
         try {
-            if (isEmpty()) empty.await(1, TimeUnit.SECONDS);
+            while (getNotEmpty()) notEmpty.await(1, TimeUnit.SECONDS);
             retNode = head.next;
             head.next = retNode.next;
             retNode.pre = head;
             size.add(-1);
-            full.signal();
+            notFull.signal();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -78,13 +78,13 @@ public class MyLinkedBlockingQueue<T> {
     public void push(T value) {
         lock.lock();
         try {
-            if (size.intValue() == capacity) full.await(1, TimeUnit.SECONDS);
-            Node pre = tail;
-            Node node = new Node(value, null, pre);
+            while (size.intValue() == capacity) notFull.await(1, TimeUnit.SECONDS);
+            Node<T> pre = tail;
+            Node<T> node = new Node<>(value, null, pre);
             pre.next = node;
             tail = node;
             size.add(1);
-            empty.signal();
+            notEmpty.signal();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -92,7 +92,7 @@ public class MyLinkedBlockingQueue<T> {
         }
     }
 
-    public boolean isEmpty() {
+    public boolean getNotEmpty() {
         return head == tail || size.intValue() == 0;
     }
 
@@ -102,10 +102,10 @@ public class MyLinkedBlockingQueue<T> {
 
     private static class Node<T> {
         T value;
-        Node next;
-        Node pre;
+        Node<T> next;
+        Node<T> pre;
 
-        Node(T value, Node next, Node pre) {
+        Node(T value, Node<T> next, Node<T> pre) {
             this.value = value;
             this.next = next;
             this.pre = pre;

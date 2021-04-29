@@ -37,6 +37,9 @@ public class ThreadPrintNumber4 {
                 print(startIndex, endIndex);
             }, "线程-" + i).start();
         }
+
+        int i = 2;
+        System.out.println(5 & ~i);
     }
 
     public static void print(int startIndex, int endIndex) {
