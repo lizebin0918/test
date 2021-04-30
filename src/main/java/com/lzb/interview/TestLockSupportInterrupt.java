@@ -29,6 +29,7 @@ public class TestLockSupportInterrupt {
             try {
                 Thread.sleep(5000);
                 System.out.println("t2 interrupt t1");
+                //只是修改t1的中断标识位，并不会中断线程，t1本身会检查中断标识位
                 t1.interrupt();
             } catch (InterruptedException e) {
                 e.printStackTrace();
