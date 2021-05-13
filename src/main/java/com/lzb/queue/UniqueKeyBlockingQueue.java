@@ -44,9 +44,10 @@ public class UniqueKeyBlockingQueue {
                 queue.offer(node);
                 return true;
             } else {
-                //队列存在，判断版本号，只保留最新的node
+                //队列存在，判断版本号，只保留最新版本的node
                 if (oldNode.version > node.version) {
-                    map.put(key, oldNode);
+                    node.fileUrl = oldNode.fileUrl;
+                    node.version = oldNode.version;
                 }
             }
             return false;
@@ -77,7 +78,7 @@ public class UniqueKeyBlockingQueue {
     @Data
     private static class Node {
         int customerId, version, day;
-        String fileUrl;
+        String fileUrl, key;
 
         Node() {}
 
@@ -86,10 +87,11 @@ public class UniqueKeyBlockingQueue {
             this.day = day;
             this.version = version;
             this.fileUrl = fileUrl;
+            this.key = Objects.toString(customerId) + "_" + Objects.toString(day);
         }
 
         public String getKey() {
-            return Objects.toString(customerId) + "_" + Objects.toString(day);
+            return key;
         }
 
     }
@@ -98,30 +100,23 @@ public class UniqueKeyBlockingQueue {
         UniqueKeyBlockingQueue queue = new UniqueKeyBlockingQueue();
         int customerId = 1;
 
-        int taskSize = 5000;
+        int taskSize = 10000;
         ExecutorService threadPool = Executors.newCachedThreadPool();
         CountDownLatch latch = new CountDownLatch(taskSize);
+
+        long start = System.currentTimeMillis();
 
         for (int i=0; i<taskSize; i++) {
             int version = i;
             threadPool.execute(() -> {
                 try {
-                    Random r = new Random();
-                    Thread.sleep(r.nextInt(10) * 41);
                     int day = 20210513;
                     queue.push(customerId, day, version, Objects.toString(version) + "-" + day);
-                    Thread.sleep(r.nextInt(10) * 31);
                     queue.push(customerId, day + 1, version, Objects.toString(version) + "-" + (day + 1));
-                    Thread.sleep(r.nextInt(10) * 89);
                     queue.push(customerId, day + 2, version, Objects.toString(version) + "-" + (day + 2));
-                    Thread.sleep(r.nextInt(10) * 23);
                     queue.push(customerId, day + 3, version, Objects.toString(version) + "-" + (day + 3));
-                    Thread.sleep(r.nextInt(10) * 17);
                     queue.push(customerId, day + 4, version, Objects.toString(version) + "-" + (day + 4));
-                    Thread.sleep(r.nextInt(10) * 71);
                     queue.push(customerId, day + 5, version, Objects.toString(version) + "-" + (day + 5));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 } finally {
                     latch.countDown();
                 }
@@ -137,6 +132,10 @@ public class UniqueKeyBlockingQueue {
         System.out.println("queue.size() = " + queue.size());
         System.out.println("map.size() = " + queue.map.size());
         threadPool.shutdown();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("执行耗时（毫秒）:" + (end - start));//1216 1312
     }
 
 }
