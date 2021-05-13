@@ -1,4 +1,4 @@
-package com.lzb;
+package com.lzb.concurrent;
 
 import java.util.Map;
 import java.util.Objects;

@@ -2,6 +2,7 @@ package com.lzb.stream;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +16,7 @@ public class Test {
 
     public static void main(String[] args) throws InterruptedException {
         Map<Integer, String> map = null;
-        {
+        Function<Void, Map<Integer, String>> consumer = (Void) -> {
             int size = 500;
             List<A> list = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
@@ -24,10 +25,12 @@ public class Test {
                 a.name = Objects.toString(i);
                 list.add(a);
             }
-            map = list.stream().collect(Collectors.toMap(A::getId, A::getName));
-            list.clear();
-        }
+            return list.stream().collect(Collectors.toMap(A::getId, A::getName));
+            //list.clear();
+            //list = null;
+        };
 
+        map = consumer.apply(null);
         System.gc();
         Thread.sleep(100000);
 
@@ -68,5 +71,4 @@ public class Test {
             super.finalize();
         }
     }
-
 }
