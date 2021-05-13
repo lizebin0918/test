@@ -20,13 +20,12 @@ public class UniqueKeyBaseRedisBlockingQueue {
     private static final String REDIS_KEY_QUEUE = "order:detail:queue";
     private static final String REDIS_KEY_HASH = "order:detail:key:hash";
 
-    private static final String PUSH_LUA = "local key = ARGV[1]\n"
-        + "local exist = redis.call('HEXISTS', KEYS[2], key)\n"
-        + "if( exist == 0 )\n"
+    private static final String PUSH_LUA =
+        "local exist = redis.call('hset', KEYS[2], ARGV[1], ARGV[2])\n"//设置最新值
+        + "if( exist == 1 )\n"//设置成功，表示原值不存在
         + "then\n"
-        + "    redis.call('lpush', KEYS[1], key)\n"
-        + "end\n"
-        + "redis.call('hset', KEYS[2], key, ARGV[2])\n";
+        + "    redis.call('lpush', KEYS[1], ARGV[1])\n"//入队
+        + "end\n";
 
     private static final String POP_LUA = "local key = redis.call('rpop', KEYS[1])\n"
         + "if(key ~= nil)\n"
@@ -77,6 +76,9 @@ public class UniqueKeyBaseRedisBlockingQueue {
         Jedis connection = null;
         try {
             connection = redisHelper.getConnection();
+            if (Objects.isNull(connection)) {
+                return;
+            }
             connection.eval(PUSH_LUA, KEYS, params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,8 +118,8 @@ public class UniqueKeyBaseRedisBlockingQueue {
         UniqueKeyBaseRedisBlockingQueue queue = new UniqueKeyBaseRedisBlockingQueue();
         int customerId = 1;
 
-        int taskSize = 500;
-        ExecutorService threadPool = Executors.newCachedThreadPool();
+        int taskSize = 50;
+        ExecutorService threadPool = Executors.newFixedThreadPool(5);
         CountDownLatch latch = new CountDownLatch(taskSize);
 
         long start = System.currentTimeMillis();
@@ -129,15 +131,10 @@ public class UniqueKeyBaseRedisBlockingQueue {
                     int day = 20210513;
                     queue.push(customerId, day, RandomStringUtils.randomAlphabetic(32));
                     queue.push(customerId, day + 1, RandomStringUtils.randomAlphabetic(32));
-                    Thread.sleep(31);
                     queue.push(customerId, day + 2, RandomStringUtils.randomAlphabetic(32));
-                    Thread.sleep(31 * 9);
                     queue.push(customerId, day + 3, RandomStringUtils.randomAlphabetic(32));
-                    Thread.sleep(31 * 11);
                     queue.push(customerId, day + 4, RandomStringUtils.randomAlphabetic(32));
                     queue.push(customerId, day + 5, RandomStringUtils.randomAlphabetic(32));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 } finally {
                     latch.countDown();
                 }
