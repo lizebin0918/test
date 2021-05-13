@@ -17,7 +17,9 @@ public class UniqueKeyBlockingQueue {
 
     private ConcurrentHashMap<String, Node> map = new ConcurrentHashMap<>();
 
-    private LinkedBlockingQueue<Node> queue = new LinkedBlockingQueue<>();
+    //private LinkedBlockingQueue<Node> queue = new LinkedBlockingQueue<>();
+    //private ConcurrentLinkedQueue<Node> queue = new ConcurrentLinkedQueue<>();
+    private LinkedList<Node> queue = new LinkedList<>();
 
     public int size() {
         return queue.size();
@@ -35,22 +37,18 @@ public class UniqueKeyBlockingQueue {
      * @param fileUrl
      * @return
      */
-    public  boolean push(int customerId, int day, int version, String fileUrl) {
+    public void push(int customerId, int day, int version, String fileUrl) {
         Node node = new Node(customerId, day, version, fileUrl);
         String key = node.getKey();
-        synchronized(key.intern()) {
-            Node oldNode = map.put(key, node);
-            if (Objects.isNull(oldNode)) {
-                queue.offer(node);
-                return true;
-            } else {
-                //队列存在，判断版本号，只保留最新版本的node
-                if (oldNode.version > node.version) {
-                    node.fileUrl = oldNode.fileUrl;
-                    node.version = oldNode.version;
-                }
-            }
-            return false;
+        Node oldNode = map.putIfAbsent(key, node);
+        if (Objects.isNull(oldNode)) {
+            queue.offer(node);
+            return;
+        }
+        //队列存在，判断版本号，只保留最新版本的node
+        if (oldNode.version < version) {
+            oldNode.version = version;
+            oldNode.fileUrl = fileUrl;
         }
     }
 
@@ -100,7 +98,7 @@ public class UniqueKeyBlockingQueue {
         UniqueKeyBlockingQueue queue = new UniqueKeyBlockingQueue();
         int customerId = 1;
 
-        int taskSize = 10000;
+        int taskSize = 1000000;
         ExecutorService threadPool = Executors.newCachedThreadPool();
         CountDownLatch latch = new CountDownLatch(taskSize);
 
@@ -135,7 +133,7 @@ public class UniqueKeyBlockingQueue {
 
         long end = System.currentTimeMillis();
 
-        System.out.println("执行耗时（毫秒）:" + (end - start));//1216 1312
+        System.out.println("执行耗时（毫秒）:" + (end - start));//2600-3200
     }
 
 }
