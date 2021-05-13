@@ -17,9 +17,7 @@ public class UniqueKeyBlockingQueue {
 
     private ConcurrentHashMap<String, Node> map = new ConcurrentHashMap<>();
 
-    //private LinkedBlockingQueue<Node> queue = new LinkedBlockingQueue<>();
-    //private ConcurrentLinkedQueue<Node> queue = new ConcurrentLinkedQueue<>();
-    private LinkedList<Node> queue = new LinkedList<>();
+    private ConcurrentLinkedQueue<Node> queue = new ConcurrentLinkedQueue<>();
 
     public int size() {
         return queue.size();
@@ -87,11 +85,6 @@ public class UniqueKeyBlockingQueue {
             this.fileUrl = fileUrl;
             this.key = Objects.toString(customerId) + "_" + Objects.toString(day);
         }
-
-        public String getKey() {
-            return key;
-        }
-
     }
 
     public static void main(String[] args) throws InterruptedException {
