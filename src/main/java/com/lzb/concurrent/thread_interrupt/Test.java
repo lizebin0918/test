@@ -3,6 +3,7 @@ package com.lzb.concurrent.thread_interrupt;
  * sleep 被中断，抛异常，会自动重置中断标志位，isInterrupted 是 false
  * 如果要中断线程，可以调用：Thread.currentThread().interrupt()；
  * 如果要返回当前中断标志位，并复位：Thread.interrupted()
+ * 如果线程休眠，关闭应用：Process finished with exit code 130 (interrupted by signal 2: SIGINT)
  *
  * Created on : 2021-05-17 10:49
  * @author chenpi 

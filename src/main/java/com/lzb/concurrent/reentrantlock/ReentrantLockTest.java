@@ -1,4 +1,4 @@
-package com.lzb.concurrent;
+package com.lzb.concurrent.reentrantlock;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
