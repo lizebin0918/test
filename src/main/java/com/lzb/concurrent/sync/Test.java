@@ -14,6 +14,9 @@ public class Test {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
+        int day = 20200302;
+        System.out.println(LocalDate.of(day / 10000, day % 1000 / 100, day % 100));
+
         System.out.println(3 & 0);
 
         AtomicInteger count = new AtomicInteger();
