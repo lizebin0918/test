@@ -15,41 +15,51 @@ public class OutOfOrderExecution {
 
     public static void main(String[] args) throws InterruptedException {
 
-        CountDownLatch latch = new CountDownLatch(1);
+        int counter = 0;
 
-        Thread threadA = new Thread(() -> {
+        while (true) {
 
-            try {
-                latch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            x = y = a = b = 0;
+
+            CountDownLatch latch = new CountDownLatch(1);
+
+            Thread threadA = new Thread(() -> {
+
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                a = 1;
+                x = b;
+            });
+
+            Thread threadB = new Thread(() -> {
+
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                b = 1;
+                y = a;
+            });
+
+            threadA.start();
+            threadB.start();
+            latch.countDown();
+
+            threadA.join();
+            threadB.join();
+
+            //不可能情况:x = y = 0
+            System.out.println((counter++) + " x = " + x + " y = " + y);
+            if (x == 0 && y == 0) {
+                break;
             }
-
-            a = 1;
-            x = b;
-        });
-
-        Thread threadB = new Thread(() -> {
-
-            try {
-                latch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            b = 1;
-            y = a;
-        });
-
-        threadA.start();
-        threadB.start();
-        latch.countDown();
-
-        threadA.join();
-        threadB.join();
-
-        //不可能情况:x = y = 0
-        System.out.println("x = " + x + " y = " + y);
+        }
 
     }
 
