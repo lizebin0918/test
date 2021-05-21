@@ -1,4 +1,4 @@
-package com.lzb.cache_line;
+package com.lzb.happens_before;
 
 import java.util.*;
 
@@ -8,6 +8,7 @@ import java.util.*;
  * @author chenpi 
  */
 public class TestVolatile {
+    //private volatile ArrayList<String> myList = new ArrayList<>();遵循happen-before原则
     private ArrayList<String> myList = new ArrayList<>();
     public static void main(String[] args) throws InterruptedException {
         TestVolatile t = new TestVolatile();
@@ -28,27 +29,17 @@ public class TestVolatile {
         //查询元素个数是否等于5
         Thread sizeThread = new Thread(() -> {
             while (true) {
+                //因为System.out.println底层采用synchronized关键，遵循happens-before原则，所以能看到list的变化
+                //System.out.println("size = " + t.myList.size());
                 if (t.myList.size() == 5) {
+                    System.out.println("size thread stop");
                     break;
                 }
             }
-            System.out.println("size thread stop");
         });
         sizeThread.start();
 
-        //查看元素是否写到Object[]
-        Thread lookThread = new Thread(() -> {
-            while (true) {
-                if (t.myList.toArray().length == 5) {
-                    break;
-                }
-            }
-            System.out.println(t.myList.size());
-        });
-        lookThread.start();
-
         addThread.join();
         sizeThread.join();
-        lookThread.join();
     }
 }
