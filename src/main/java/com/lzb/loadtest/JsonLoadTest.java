@@ -49,11 +49,7 @@ public class JsonLoadTest {
                                                         Feature.DisableFieldSmartMatch,
                                                         Feature.DisableSpecialKeyDetect).getBuyDate());*/
                     //System.out.println(threadName + fastjsonString);
-                    System.out.println(JSONObject.parseObject(jsonString,
-                                           Feature.DisableCircularReferenceDetect,
-                                           Feature.IgnoreNotMatch,
-                                           Feature.DisableFieldSmartMatch,
-                                           Feature.DisableSpecialKeyDetect).getString("buyDate"));
+                    System.out.println(JSONObject.parseObject(jsonString).getString("buyDate"));
                 }
 
                 //gson
