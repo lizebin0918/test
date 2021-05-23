@@ -4,8 +4,8 @@ import java.util.*;
 
 /**
  * volitale除了修饰原生类型，如果是引用类型的成员变量也会保持对应语义？<br/>
- * 1.sizeThread线程加上System.out.println()，遵循happens-before原则
- * 2.sizeThread读取一个volatile变量，也可以"看到"之前的变量变化
+ * 1.sizeThread线程加上System.out.println()，里面采用synchronized(this)，遵循happens-before原则，之前共享变量的操作都能看见
+ * 2.sizeThread读取一个volatile变量，遵循happens-before原则，也可以"看到"之前的其他变量变化
  * Created on : 2021-03-29 14:17
  * @author chenpi 
  */
@@ -20,7 +20,6 @@ public class TestVolatile {
             for (int i=0; i<10; i++) {
                 t.myList.add("" + i);
                 System.out.println("myList.size() = " + t.myList.size());
-                System.out.println("number = " + t.number++);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
