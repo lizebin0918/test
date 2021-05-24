@@ -21,16 +21,18 @@ public class TestOutputStream {
 
     public static void main(String[] args) {
         String jsonString = "{\"buyDate\":\"1617552000\",\"payMoney\":\"0\",\"storeNo\":\"81104\",\"orderNo\":\"100432293097765048\",\"name\":\"片仔癀\",\"count\":\"1.0\",\"drugId\":\"107231\",\"costPrice\":\"476.00\",\"originMoney\":\"590.00\",\"retailPrice\":\"590.00\",\"costAmount\":\"476.00\",\"grossProfitAmount\":\"97.30\"}";
-        int size = 1000000;
+        int size = 100000;
         List<OrderDetail> list = new ArrayList<>(size);
 
         for (int i=0; i<size; i++) {
             list.add(JSON.parseObject(jsonString, OrderDetail.class));
         }
 
+        System.out.println("start json serilizalize");
+
         long start = System.currentTimeMillis();
-        //new String(stringWrite(list));
-        new String(streamWrite(list));
+        new String(stringWrite(list));
+        //new String(streamWrite(list));
         long end = System.currentTimeMillis();
 
         System.out.println("耗时（毫秒）:" + (end - start));
@@ -45,7 +47,7 @@ public class TestOutputStream {
 
     public static byte[] streamWrite(List<OrderDetail> list) {
         byte[] bytes = null;
-        int bufferSize = 2048;
+        int bufferSize = 512;
         try (
             ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream(bufferSize)) {
             for (OrderDetail detail : list) {
@@ -56,8 +58,6 @@ public class TestOutputStream {
             bytes = byteOutputStream.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-
         }
         return bytes;
     }
