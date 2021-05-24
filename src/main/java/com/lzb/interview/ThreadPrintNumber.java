@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 100个整数，三个线程顺序打印<br/>
+ * 100个整数，三个线程顺序打印，A线程打印0，B线程打印1，C线程打印2，如此类推<br/>
  * Created on : 2021-04-22 16:49
  * @author chenpi 
  */
