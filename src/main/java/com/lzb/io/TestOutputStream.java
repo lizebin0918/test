@@ -31,8 +31,8 @@ public class TestOutputStream {
         System.out.println("start json serilizalize");
 
         long start = System.currentTimeMillis();
-        new String(stringWrite(list));
-        //new String(streamWrite(list));
+        //new String(stringWrite(list));
+        new String(streamWrite(list));
         long end = System.currentTimeMillis();
 
         System.out.println("耗时（毫秒）:" + (end - start));
@@ -49,7 +49,8 @@ public class TestOutputStream {
         byte[] bytes = null;
         int bufferSize = 512;
         try (
-            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream(bufferSize)) {
+            ByteArrayOutputStream byteOutputStream =
+                new ByteArrayOutputStream(bufferSize * list.size())) {
             for (OrderDetail detail : list) {
                 JSON.writeJSONString(byteOutputStream, detail, SerializerFeature.DisableCircularReferenceDetect);
                 byteOutputStream.write(System.lineSeparator().getBytes());
