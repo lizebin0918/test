@@ -1,4 +1,4 @@
-package com.lzb.happens_before;
+package com.lzb.jmm.happens_before;
 
 import java.util.*;
 
