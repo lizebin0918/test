@@ -50,7 +50,7 @@ public class TestOutputStream {
         int bufferSize = 512;
         try (
             ByteArrayOutputStream byteOutputStream =
-                new ByteArrayOutputStream(bufferSize * list.size())) {
+                new ByteArrayOutputStream(bufferSize)) {
             for (OrderDetail detail : list) {
                 JSON.writeJSONString(byteOutputStream, detail, SerializerFeature.DisableCircularReferenceDetect);
                 byteOutputStream.write(System.lineSeparator().getBytes());
