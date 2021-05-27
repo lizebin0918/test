@@ -4,8 +4,11 @@ import java.util.*;
 
 /**
  * volitale除了修饰原生类型，如果是引用类型的成员变量也会保持对应语义？<br/>
- * 1.sizeThread线程加上System.out.println()，里面采用synchronized(this)，遵循happens-before原则，之前共享变量的操作都能看见
- * 2.sizeThread读取一个volatile变量，遵循happens-before原则，也可以"看到"之前的线程修改其他变量的变化(包括非volatile变量)
+ * 1.sizeThread线程加上System.out.println()，里面采用synchronized(this)
+ * ，只要当前线程用到synchronized关键字，可以得到结论
+ * 2.sizeThread读取或者修改一个volatile变量，可以得到结论
+ * 结论：遵循 happens-before 原则，对于之前的线程修改其他变量的变化对于当前线程来说都是可见的
+ * (包括非volatile变量)
  * Created on : 2021-03-29 14:17
  * @author chenpi 
  */
