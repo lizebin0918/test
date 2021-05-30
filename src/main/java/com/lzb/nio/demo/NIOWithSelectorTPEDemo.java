@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.lzb.nio.demo.Utils.*;
 
 /**
+ * 多线程selector
  * @author hj
  * @version 1.0
  * @description: TODO
@@ -27,10 +28,9 @@ public class NIOWithSelectorTPEDemo {
 
     public static void main(String[] args) throws Exception {
         ServerSocketChannel serverSocketChannel = createServerSocketChannel();
-        System.out.println("启动服务器");
+        System.out.println("启动服务器，监听端口：" + DEFAULT_PORT);
         initPoller();
         startPoller();
-        poolExecutor.prestartAllCoreThreads();
         long count = 0;
         int m = pollers.length - 1;
         for (; ; ) {
@@ -42,6 +42,7 @@ public class NIOWithSelectorTPEDemo {
 
     public static ServerSocketChannel createServerSocketChannel() throws Exception {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        //blocking accept
         serverSocketChannel.configureBlocking(true);
         serverSocketChannel.bind(new InetSocketAddress(DEFAULT_PORT), BACK_LOG);
         return serverSocketChannel;
@@ -88,6 +89,8 @@ public class NIOWithSelectorTPEDemo {
                         }
                         break;
                     }
+                    System.out.println(Thread.currentThread().getName() +
+                                       ":start run");
                     atomicBoolean.set(true);
                     selector.select(1000);
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
