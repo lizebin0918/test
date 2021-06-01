@@ -16,7 +16,7 @@ public class MyPhantomReference {
 
     public static void main(String[] args) throws InterruptedException {
 
-        byte[] m = new byte[1024];
+        byte[] m = new byte[1024 * 1024];
         ReferenceQueue<Integer> queue = new ReferenceQueue<>();
         PhantomReference<Integer> pr = new PhantomReference<>(new Integer(1),
                                                               queue);
@@ -26,7 +26,7 @@ public class MyPhantomReference {
             while (true) {
                 mb.add(m);
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
