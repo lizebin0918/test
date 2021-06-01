@@ -39,7 +39,7 @@ public class MyPhantomReference {
             while (true) {
                 Reference<? extends Integer> i = queue.poll();
                 if (i != null) {
-                    System.out.println("i被jvm回收:" + i);
+                    System.out.println("i被jvm回收:" + i.get());
                 }
             }
         }).start();
