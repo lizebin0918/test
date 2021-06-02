@@ -12,12 +12,12 @@ import java.util.Objects;
 public class MyWeakReference {
 
     public static void main(String[] args) throws InterruptedException {
-        Date date = new Date();
-        ReferenceQueue<Date> queue = new ReferenceQueue<>();
-        WeakReference<Date> r = new WeakReference<>(date, queue);
+        A a = new A();
+        ReferenceQueue<A> queue = new ReferenceQueue<>();
+        WeakReference<A> r = new WeakReference<>(a, queue);
 
         new Thread(() -> {
-            Reference<? extends Date> gc = null;
+            Reference<? extends A> gc = null;
             while (Objects.isNull(gc)) {
                 gc = queue.poll();
             }
@@ -27,10 +27,17 @@ public class MyWeakReference {
 
         System.out.println("1:" + r.get());
         //需要把这个对象的强引用解除
-        date = null;
+        a = null;
         System.gc();
         System.out.println(r.get());
 
+    }
+
+    private static class A {
+        @Override
+        protected void finalize() throws Throwable {
+            System.out.println("gc reclaim");
+        }
     }
 
 }
