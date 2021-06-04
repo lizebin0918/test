@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <br/>
+ * https://dzone.com/articles/20-examples-of-using-javas-completablefuture<br/>
  * Created on : 2021-06-02 16:19
  * @author chenpi 
  */

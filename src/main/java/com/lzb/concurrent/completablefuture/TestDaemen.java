@@ -13,8 +13,6 @@ public class TestDaemen {
     static int threadSize = 8;
     public static final Semaphore semaphore = new Semaphore(threadSize);
 
-    public static final ExecutorService threadPool = Executors.newCachedThreadPool();
-
     public static void main(String[] args) throws InterruptedException {
 
         Thread t = new Thread(() -> {
@@ -31,11 +29,11 @@ public class TestDaemen {
                             e.printStackTrace();
                         }
                         System.out.println(tn + " end sleep ");
-                    }, threadPool);
+                    }).whenComplete((r, e) -> {
+                        semaphore.release();
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
-                } finally {
-                    semaphore.release();
                 }
             }
         });
@@ -55,7 +53,5 @@ public class TestDaemen {
             }
         }
         System.out.println("stop");
-
-        threadPool.shutdown();
     }
 }
