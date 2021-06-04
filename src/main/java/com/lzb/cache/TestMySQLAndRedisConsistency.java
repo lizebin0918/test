@@ -147,6 +147,37 @@ public class TestMySQLAndRedisConsistency {
         return Optional.of(ua);
     }
 
+    Semaphore semaphore = new Semaphore(1);
+    /**
+     * 利用信号量
+     *
+     * @param id
+     * @return
+     */
+    public Optional<UserAccount> readBySemphore(int id) {
+        UserAccount ua = get(id);
+        if (Objects.nonNull(ua)) return Optional.of(ua);
+        try {
+            while (Objects.isNull(ua = get(id)) && semaphore.tryAcquire(1,
+                                                                        TimeUnit.SECONDS)) {
+                try {
+                    ua = new UserAccount();
+                    ua.setId(id);
+                    ua.setBalance(new BigDecimal(id));
+                    ua.setName(Objects.toString(id));
+                    ua.setVersion(id);
+                    cache.put(id, ua);
+                    System.out.println(Thread.currentThread().getName() + ":更新---");
+                } finally {
+                    semaphore.release();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.of(ua);
+    }
+
     /**
      * @param id
      * @return
@@ -179,9 +210,9 @@ public class TestMySQLAndRedisConsistency {
                     /*System.out.println(Thread.currentThread().getName() + ":"
                                            + JSON.toJSONString(t
                                            .readByStampedLock(1)));*/
-                    System.out.println(Thread.currentThread().getName() +
-                                           ":" + JSON.toJSONString(t
-                                                                       .readByAtomicBoolean(1)));
+                    /*System.out.println(Thread.currentThread().getName() +
+                                           ":" + JSON.toJSONString(t.readByAtomicBoolean(1)));*/
+                    System.out.println(Thread.currentThread().getName() + ":" + JSON.toJSONString(t.readBySemphore(1)));
                 } catch (InterruptedException | BrokenBarrierException e) {
                     e.printStackTrace();
                 } finally {
