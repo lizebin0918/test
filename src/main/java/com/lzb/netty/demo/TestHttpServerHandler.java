@@ -16,17 +16,20 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
-        ByteBuf content = Unpooled.copiedBuffer("Hello World",
-                                                   CharsetUtil.UTF_8);
-        FullHttpMessage response =
-            new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                                        HttpResponseStatus.OK,
-                                        content);
 
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH,
-                               content.readableBytes());
+        if (httpObject instanceof HttpRequest) {
+            ByteBuf content = Unpooled.copiedBuffer("Hello World",
+                                                    CharsetUtil.UTF_8);
+            FullHttpMessage response =
+                new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+                                            HttpResponseStatus.OK,
+                                            content);
 
-        channelHandlerContext.writeAndFlush(response);
+            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+            response.headers().set(HttpHeaderNames.CONTENT_LENGTH,
+                                   content.readableBytes());
+
+            channelHandlerContext.writeAndFlush(response);
+        }
     }
 }
