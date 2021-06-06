@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * https://dzone.com/articles/20-examples-of-using-javas-completablefuture<br/>
+ * 1.CompletableFuture由一个个CompletableStage组成，每个Stage是上一个Stage的观察者，后面同理
  * Created on : 2021-06-02 16:19
  * @author chenpi 
  */
