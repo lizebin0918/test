@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.lzb.nio.demo.Utils.*;
 
 /**
- * 多线程selector
+ * 多线程selector，主从Reactor多线程模型
  * @author hj
  * @version 1.0
  * @description: TODO

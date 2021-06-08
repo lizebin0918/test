@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 import static com.lzb.nio.demo.Utils.*;
 
 /**
+ * NIO 单线程Reactor模型
  * @author hj
  * @version 1.0
  * @description: 普通NIO，只用byteBuffer和channel只能保证 QPS 2.0

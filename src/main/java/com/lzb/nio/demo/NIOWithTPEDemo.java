@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import static com.lzb.nio.demo.Utils.*;
 
 /**
+ * 单线程接收，多线程处理
  * @author hj
  * @version 1.0
  * @description: QPS 130
