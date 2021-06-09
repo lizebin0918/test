@@ -82,7 +82,6 @@ public class ApiDemo {
                 System.out.println("then apply async thread name:" + Thread.currentThread().getName());
                 return s.toUpperCase();
             });
-
         String s = cf.get();
         System.out.println(s);
     }
