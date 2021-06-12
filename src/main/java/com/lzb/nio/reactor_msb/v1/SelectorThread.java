@@ -22,8 +22,11 @@ public class SelectorThread implements Runnable {
      */
     LinkedBlockingQueue<Channel> selectorQueue = new LinkedBlockingQueue<>();
     Selector selector = null;
-    SelectorThread() {
+    SelectorThreadGroup group = null;
+
+    SelectorThread(SelectorThreadGroup group) {
         try {
+            this.group = group;
             selector = Selector.open();
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,6 +89,9 @@ public class SelectorThread implements Runnable {
                 int num = client.read(buffer);
                 if (num > 0) {
                     buffer.flip();
+                    buffer.mark();
+                    System.out.println("read from client:" + new String(StandardCharsets.UTF_8.decode(buffer).array()));
+                    buffer.reset();
                     while (buffer.hasRemaining()) {
                         client.write(buffer);
                     }
@@ -111,7 +117,7 @@ public class SelectorThread implements Runnable {
             SocketChannel client = server.accept();
             client.configureBlocking(false);
             //注册到对应的selector上
-            selectorQueue.add(client);
+            group.nextSelector(client);
         } catch (Exception e) {
             e.printStackTrace();
         }

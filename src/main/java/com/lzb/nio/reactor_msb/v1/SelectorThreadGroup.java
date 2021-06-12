@@ -23,7 +23,7 @@ public class SelectorThreadGroup {
     public SelectorThreadGroup(int size) {
         selectors = new SelectorThread[size];
         for (int i = 0; i < size; i++) {
-            selectors[i] = new SelectorThread();
+            selectors[i] = new SelectorThread(this);
             new Thread(selectors[i]).start();
         }
     }
