@@ -25,7 +25,7 @@ public class ThreadPrintNumber2 {
 
     private static volatile int startIndex;
 
-    private static volatile int length = 10;
+    private final static int length = 10;
 
     public static void main(String[] args) {
         int threadSize = 10;

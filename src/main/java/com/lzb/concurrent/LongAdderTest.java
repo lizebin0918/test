@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -19,19 +20,22 @@ public class LongAdderTest {
         LongAdder longAdder = new LongAdder();
         longAdder.add(1);
         LongAdderTest tester = new LongAdderTest();
-        /*for (int i=0; i<10; i++) {
+        for (int i=0; i<10; i++) {
             int num = i;
             new Thread(() -> {
                 System.out.println(">>>>>>>>>>>>>>>>>" + num + ":" + tester.getProbe());
                 ThreadLocalRandom.current();
                 System.out.println(">>>>>>>>>>>>>>>>>" + num + ":" + tester.getProbe());
             }).start();
-        }*/
+        }
 
         Map<String, String> map = new ConcurrentHashMap<>(128);
         for (int i=0; i<100; i++) {
             map.put(Objects.toString(i), Objects.toString(i));
         }
+
+        String name = "";
+        System.out.println(name);
     }
 
     public int getProbe() {

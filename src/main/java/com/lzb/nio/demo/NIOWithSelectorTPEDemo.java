@@ -16,13 +16,14 @@ import static com.lzb.nio.demo.Utils.*;
 
 /**
  * 多线程selector，主从Reactor多线程模型
+ *
  * @author hj
  * @version 1.0
  * @description: TODO
  * @date 2021/5/17 21:30
  */
 public class NIOWithSelectorTPEDemo {
-    private static final int POLLER_NUM =  2;
+    private static final int POLLER_NUM = 2;
     private static Poller[] pollers;
     private static ThreadPoolExecutor poolExecutor = Utils.buildThreadPoolExecutor();
 
@@ -89,8 +90,7 @@ public class NIOWithSelectorTPEDemo {
                         }
                         break;
                     }
-                    System.out.println(Thread.currentThread().getName() +
-                                       ":start run");
+                    System.out.println(Thread.currentThread().getName() + ":start run");
                     atomicBoolean.set(true);
                     selector.select(1000);
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
