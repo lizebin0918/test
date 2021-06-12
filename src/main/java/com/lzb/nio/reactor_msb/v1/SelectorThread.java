@@ -40,9 +40,7 @@ public class SelectorThread implements Runnable {
 
             try {
                 //1.如果返回0，表示有其他线程唤醒-wakeup()
-                System.out.println(Thread.currentThread().getName() + ":开始select()");
                 int nums = selector.select();
-                System.out.println(Thread.currentThread().getName() + ":结束select()");
                 //2.有selectionKeys
                 if (nums > 0) {
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
@@ -65,13 +63,12 @@ public class SelectorThread implements Runnable {
                 if (channel instanceof ServerSocketChannel) {
                     ServerSocketChannel server = (ServerSocketChannel) channel;
                     server.register(selector, SelectionKey.OP_ACCEPT);
+                    System.out.println(Thread.currentThread().getName() + " regist listen");
                 } else if (channel instanceof SocketChannel) {
+                    System.out.println(Thread.currentThread().getName() + " regist client:" + ((SocketChannel) channel).getRemoteAddress());
                     SocketChannel client = (SocketChannel) channel;
                     ByteBuffer b = ByteBuffer.allocateDirect(4096);
                     client.register(selector, SelectionKey.OP_READ, b);
-                    System.out.println(
-                            Thread.currentThread().getName() + " read byte data:" + StandardCharsets.UTF_8.decode(b)
-                    );
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -115,6 +112,7 @@ public class SelectorThread implements Runnable {
         ServerSocketChannel server = (ServerSocketChannel) key.channel();
         try {
             SocketChannel client = server.accept();
+            System.out.println(Thread.currentThread().getName() + " accept client:" + client.getRemoteAddress());
             client.configureBlocking(false);
             //注册到对应的selector上
             group.nextSelector(client);

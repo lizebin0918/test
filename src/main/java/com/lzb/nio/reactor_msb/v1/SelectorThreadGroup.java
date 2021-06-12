@@ -2,10 +2,7 @@ package com.lzb.nio.reactor_msb.v1;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.Channel;
-import java.nio.channels.ClosedChannelException;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -33,7 +30,7 @@ public class SelectorThreadGroup {
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.bind(new InetSocketAddress(port));
-            System.out.println("服务端注册.....，端口:" + port);
+            System.out.println("服务端注册.....，端口: " + port);
             nextSelector(serverSocketChannel);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,8 +41,6 @@ public class SelectorThreadGroup {
      * @param channel ServerSocketChannel or SocketChannel
      */
     public void nextSelector(Channel c) {
-        System.out.println("channel注册...");
-        SelectorThread st = next();
 
         //SelectorThread已经在内部selector.select()阻塞，通过什么方式唤醒select()
         //并注册accept事件？？？？通过队列
@@ -56,13 +51,31 @@ public class SelectorThreadGroup {
             e.printStackTrace();
         }*/
 
-        st.selectorQueue.add(c);
-        st.selector.wakeup();
+        //混杂模式：channel的事件均匀注册到不同的selector上
+        //st.selectorQueue.add(c);
+        //st.selector.wakeup();
+
+        //仿照netty的模式，selectors[0]只接收accept事件，selectors[n]接收读写事件
+        if (c instanceof ServerSocketChannel) {
+            selectors[0].selectorQueue.add(c);
+            selectors[0].selector.wakeup();
+        }
+
+        if (c instanceof SocketChannel) {
+            SelectorThread st = nextV1();
+            st.selectorQueue.add(c);
+            st.selector.wakeup();
+        }
     }
 
     private SelectorThread next() {
         int index = counter.incrementAndGet() % selectors.length;
         return selectors[index];
+    }
+
+    private SelectorThread nextV1() {
+        int index = counter.incrementAndGet() % (selectors.length - 1);
+        return selectors[index + 1];
     }
 
 }

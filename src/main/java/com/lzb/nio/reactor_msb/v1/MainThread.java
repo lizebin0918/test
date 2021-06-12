@@ -10,7 +10,7 @@ public class MainThread {
 
     public static void main(String[] args) {
 
-        SelectorThreadGroup group = new SelectorThreadGroup(1);
+        SelectorThreadGroup group = new SelectorThreadGroup(3);
         group.bind(8888);
 
     }
