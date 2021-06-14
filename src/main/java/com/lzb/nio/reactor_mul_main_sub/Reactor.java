@@ -1,4 +1,4 @@
-package com.lzb.nio.reactor_2;
+package com.lzb.nio.reactor_mul_main_sub;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * 接收：连接事件
+ * 事件分发器，只接收：连接事件(Acceptor)，相当于是netty的BossGroup
  */
 public class Reactor implements Runnable {
     ServerSocketChannel serverSocketChannel;

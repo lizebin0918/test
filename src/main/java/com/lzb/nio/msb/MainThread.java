@@ -1,4 +1,4 @@
-package com.lzb.nio.reactor_msb.v1;
+package com.lzb.nio.msb;
 
 /**
  * 主线程:不做IO和业务的操作<br/>

@@ -1,4 +1,4 @@
-package com.lzb.nio.reactor_2;
+package com.lzb.nio.reactor_mul_main_sub;
 
 public class Server {
     public static void main(String[] args) {

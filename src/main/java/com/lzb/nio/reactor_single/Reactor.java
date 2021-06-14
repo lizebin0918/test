@@ -1,4 +1,4 @@
-package com.lzb.nio.reactor_1;
+package com.lzb.nio.reactor_single;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -6,6 +6,9 @@ import java.nio.channels.*;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * 单线程Reactor
+ */
 public class Reactor implements Runnable {
     ServerSocketChannel serverSocketChannel;
     Selector selector;

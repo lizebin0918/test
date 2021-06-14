@@ -1,4 +1,4 @@
-package com.lzb.nio.reactor_2;
+package com.lzb.nio.reactor_mul_main_sub;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

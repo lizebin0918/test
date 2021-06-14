@@ -24,7 +24,7 @@ public class NioServerSocket {
 
     public static void main(String[] args) throws Exception {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.configureBlocking(true);
         serverSocketChannel.bind(new InetSocketAddress(8080), 1024);
 
         while (true) {

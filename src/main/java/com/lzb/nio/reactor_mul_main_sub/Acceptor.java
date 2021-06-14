@@ -1,13 +1,12 @@
-package com.lzb.nio.reactor_2;
+package com.lzb.nio.reactor_mul_main_sub;
 
 import java.io.IOException;
 import java.nio.channels.*;
 
 /**
+ *
  * 最大的不同在于Acceptor类的构造方法，我开了8个线程，8个subReactor，8个selector，
  * 程序一启动，8个线程就会执行，执行的就是subReactor中定义的run方法，监听事件。
- * 在Acceptor中的run方法中，又注册了读事件，所以SubReactor中定义的run方法监听的就是读事件了。
- *
  */
 public class Acceptor implements Runnable {
     private ServerSocketChannel serverSocketChannel;
