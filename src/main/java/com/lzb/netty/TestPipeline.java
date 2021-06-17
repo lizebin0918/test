@@ -6,6 +6,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
 
 /**
  * 测试pipeline顺序及传播机制<br/>
@@ -27,6 +29,7 @@ public class TestPipeline {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast(new StringDecoder());
                 for (int i = 0; i < 5; i++) {
                     pipeline.addLast(String.valueOf(i), new MySimpleHandler(String.valueOf(i)));
                 }
@@ -83,6 +86,7 @@ public class TestPipeline {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            System.out.println(msg);
             System.out.println("read:" + no);
         }
 
