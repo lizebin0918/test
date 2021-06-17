@@ -47,23 +47,24 @@ public class Registry {
                 //所有业务逻辑处理全部归总到了一个队列中
                 //这个队列中包含了各种各样的处理逻辑，对这些处理逻辑在Netty中有一个封装
                 //封装成一个对象，无锁化串行任务队列
+                //note:入栈->1->3->5,出栈->5->4-2
                 ChannelPipeline p = socketChannel.pipeline();
 
                 //还原 InvokerProtocol
                 //对于自定义协议，需要对内容编解码
-                p.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,
+                p.addLast("1", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE,
                                                            0, 4, 0, 4));
                 //自定义编码
-                p.addLast(new LengthFieldPrepender(4));
+                p.addLast("2", new LengthFieldPrepender(4));
 
                 //还原 InvokerProtocol 参数
                 //实参处理
-                p.addLast("encoder", new ObjectEncoder());
-                p.addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE,
+                p.addLast("3", new ObjectEncoder());
+                p.addLast("4", new ObjectDecoder(Integer.MAX_VALUE,
                                                        ClassResolvers.cacheDisabled(null)));
                 //执行业务逻辑
                 //1.注册：给每一个对象起一个名字
-                p.addLast(new RegistryHandler());
+                p.addLast("5", new RegistryHandler());
             }
         });
 
