@@ -1,4 +1,4 @@
-package com.lzb.netty.handler.util;
+package com.lzb.netty.sinoxk.common;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;

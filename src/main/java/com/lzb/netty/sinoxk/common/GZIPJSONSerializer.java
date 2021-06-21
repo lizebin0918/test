@@ -1,12 +1,19 @@
-package com.lzb.netty.handler.util;
+package com.lzb.netty.sinoxk.common;
 
 import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
 
-public class GZIPJSONSerializer implements Serializer{
+public class GZIPJSONSerializer {
 
-    @Override
+    private static final GZIPJSONSerializer serializer = new GZIPJSONSerializer();
+
+    private GZIPJSONSerializer() {}
+
+    public static GZIPJSONSerializer getInstance() {
+        return serializer;
+    }
+
     public byte[] serialize(Object object){
         try {
             return GZIPUtils.compress(JSON.toJSONBytes(object));
@@ -16,7 +23,6 @@ public class GZIPJSONSerializer implements Serializer{
         }
     }
 
-    @Override
     public <T> T deserialize(Class<T> clazz, byte[] bytes) {
         try {
             byte[] gzip = GZIPUtils.decompress(bytes);
