@@ -7,11 +7,14 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 订单明细队列管理器，只有一个key的数据存在于队列中<br/>
+ * 订单明细队列管理器，只有一个key的数据存在于队列中
+ * list + hash实现，lua保证原子性
+ * <br/>
  * Created on : 2021-05-17 17:21
  * @author chenpi 
  */
@@ -121,6 +124,7 @@ public class QueueManager {
             try {
                 awaitEmpty();
             } catch (InterruptedException e) {
+                //防止redis连不上，打爆日志
                 log.error("订单明细出队等待，被中断");
                 //中断线程，返回，外部调用者判断中断标识位
                 Thread.currentThread().interrupt();

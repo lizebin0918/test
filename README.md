@@ -7,7 +7,9 @@
 * JMM测试:`com.lzb.jmm`
 
 ## redis
-* list队列增加set属性，保证队列只有一份数据，lua实现:`com.lzb.redis.QueueManager`
+* list队列增加set属性，保证队列只有一份数据，list + hash实现，lua保证原子性:
+  `com.lzb.redis.QueueManager`
+* 多线程消费者:`com.lzb.redis.Consumer`
 
 ## netty
 * rpc-demo:`com.lzb.netty.rpc`
