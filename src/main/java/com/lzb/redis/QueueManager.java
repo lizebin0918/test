@@ -1,4 +1,4 @@
-package com.lzb.queue;
+package com.lzb.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Slf4j
 @Component
-public class OrderDetailQueueManager {
+public class QueueManager {
 
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -111,12 +111,13 @@ public class OrderDetailQueueManager {
 
     /**
      * 队列rpop元素
+     *
      * @return value
      */
     public Optional<String> blockingPop() {
         String result = null;
-        while (!Thread.currentThread().isInterrupted() && Objects.isNull(result = redisTemplate.execute(POP_LUA_SCRIPT,
-                                                              Arrays.asList(REDIS_KEY_ORDER_DETAIL_QUEUE, REDIS_KEY_ORDER_DETAIL_HASH)))) {
+        while (!Thread.currentThread().isInterrupted()
+            && Objects.isNull(result = redisTemplate.execute(POP_LUA_SCRIPT, Arrays.asList(REDIS_KEY_ORDER_DETAIL_QUEUE, REDIS_KEY_ORDER_DETAIL_HASH)))) {
             try {
                 awaitEmpty();
             } catch (InterruptedException e) {

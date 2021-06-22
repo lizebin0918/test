@@ -1,7 +1,7 @@
 package com.lzb.manager;
 
 import com.lzb.ApplicationTests;
-import com.lzb.queue.OrderDetailQueueManager;
+import com.lzb.redis.QueueManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,10 +19,10 @@ import java.util.concurrent.atomic.LongAdder;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationTests.class)
-public class OrderDetailQueueManagerTest {
+public class QueueManagerTest {
 
     @Resource
-    private OrderDetailQueueManager orderDetailQueueManager;
+    private QueueManager queueManager;
 
     @Test
     public void test() throws Exception {
@@ -41,7 +41,7 @@ public class OrderDetailQueueManagerTest {
                     //乱序，增加冲突
                     Collections.shuffle(numList);
                     numList.forEach(num -> {
-                        orderDetailQueueManager.push(Objects.toString(num), Objects.toString(num));
+                        queueManager.push(Objects.toString(num), Objects.toString(num));
                     });
                 } finally {
                     readCdl.countDown();
@@ -50,13 +50,13 @@ public class OrderDetailQueueManagerTest {
             push.start();
         }
         readCdl.await();
-        System.out.println("push完毕，队列个数:" + orderDetailQueueManager.size());
+        System.out.println("push完毕，队列个数:" + queueManager.size());
 
         LongAdder sum = new LongAdder();
         for (int i = 0; i < threadSize; i++) {
             Thread pop = new Thread(() -> {
                 while (true) {
-                    orderDetailQueueManager.blockingPop().map(Long::valueOf).ifPresent(sum::add);
+                    queueManager.blockingPop().map(Long::valueOf).ifPresent(sum::add);
                 }
             });
             pop.start();

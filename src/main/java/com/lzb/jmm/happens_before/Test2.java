@@ -1,4 +1,4 @@
-package com.lzb.interview;
+package com.lzb.jmm.happens_before;
 
 import java.util.ArrayList;
 import java.util.List;
