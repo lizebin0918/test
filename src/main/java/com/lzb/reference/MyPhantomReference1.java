@@ -38,7 +38,7 @@ public class MyPhantomReference1 {
         t.start();
 
         Thread.sleep(5000);
-        //手动释放，jdk的DirectByteBuffer也是一样，跟GC没啥关系的
+        //手动释放，jdk的DirectByteBuffer也是一样，但是触发机制还是需要依赖GC的，只是回收的动作由开发者执行
         p.cleaner.clean();
         p = null;
         System.out.println(" person set null");
