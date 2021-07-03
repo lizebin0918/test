@@ -40,7 +40,7 @@ public class TestVolatile {
                 //因为System.out.println底层采用synchronized关键，遵循happens-before原则，所以能看到list的变化
                 //System.out.println("size = " + t.myList.size());
                 //如果number变量加上volatile修饰，t.myList的修改，对后续的线程可见
-                int n = t.number;
+                int n = t.number;//这里会插入loadload，保证了后面的读不能重排序到前面的写 updated on 20210703
                 if (t.myList.size() == 5) {
                     System.out.println("size thread stop");
                     System.out.println(t.counter);
