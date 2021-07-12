@@ -30,7 +30,8 @@ import java.util.concurrent.locks.StampedLock;
  *  2.AtomicBoolean 控制只有一个线程（A）能操作
  *  3.A线程查询数据写缓存，并设置有效期（兜底，防止旧数据），其他线程自旋查询缓存是否有更新
  *  4.多台集群，多个节点同时操作3，只有一个能成功，其他线程马上可见，并不会把查询都打到数据库
- *  5.是否能解决缓存击穿和缓存雪崩？
+ *  5.是否能解决缓存击穿？可以解决，能防止缓存直接打到数据库
+ *  6.是否能解决缓存雪崩？
  *
  * Created on : 2021-05-30 20:16
  * @author lizebin
@@ -133,6 +134,9 @@ public class TestMySQLAndRedisConsistency {
         if (Objects.nonNull(ua)) return Optional.of(ua);
         while (Objects.isNull(ua = get(id))) {
             if (isUpdating.compareAndSet(false, true)) {
+                if (Objects.nonNull(ua = get(id))) {
+                    return Optional.of(ua);
+                }
                 ua = new UserAccount();
                 ua.setId(id);
                 ua.setBalance(new BigDecimal(id));
@@ -158,8 +162,11 @@ public class TestMySQLAndRedisConsistency {
         UserAccount ua = get(id);
         if (Objects.nonNull(ua)) return Optional.of(ua);
         try {
-            while (Objects.isNull(ua = get(id)) && semaphore.tryAcquire(1,
-                                                                        TimeUnit.SECONDS)) {
+            while (Objects.isNull(ua = get(id))
+                    && semaphore.tryAcquire(1, TimeUnit.SECONDS)) {
+                if (Objects.nonNull(ua = get(id))) {
+                    return Optional.of(ua);
+                }
                 try {
                     ua = new UserAccount();
                     ua.setId(id);
