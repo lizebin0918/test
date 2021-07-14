@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
- * 单条插入转批量入库<br/>
+ * 单条插入转批量入库，基于CompletableFuture<br/>
  * Created on : 2021-07-14 16:06
  *
  * @author chenpi
@@ -62,8 +62,6 @@ public class SingleToMultipleApi {
         task.setEntity(dto);
         TASKS.add(task);
         try {
-            System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                                   + ":入库前:" + "name:" + task.getEntity().getName());
             Boolean result = task.getAsyn().get();
             System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                                    + "入库后:" + "name:" + task.getEntity().getName());
@@ -75,28 +73,28 @@ public class SingleToMultipleApi {
     }
 
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
-    private final int consumerSize = 1;
-    private final int batchSize = 10;
+    private final int consumerSize = 2;
 
     public void startConsumer() {
         for (int i = 0; i < consumerSize; i++) {
             threadPool.execute(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        TimeUnit.SECONDS.sleep(1);
+                        TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(50));
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         continue;
                     }
-                    System.out.println(TASKS.size());
+                    System.out.println(Thread.currentThread().getName() + "-任务总量:" + TASKS.size());
                     List<Task> batch = new ArrayList<>();
-                    for (int j = 0; j < batchSize; j++) {
+                    for (int j = 0; j < ThreadLocalRandom.current().nextInt(10); j++) {
                         Task task = TASKS.poll();
                         if (Objects.isNull(task)) {
                             break;
                         }
                         batch.add(task);
                     }
+                    System.out.println(Thread.currentThread().getName() + "-取出任务量:" + batch.size());
                     if (batch.size() > 0) {
                         boolean success = doBatchInsert(batch.stream().map(Task::getEntity).collect(Collectors.toList()));
                         batch.forEach(task -> {
@@ -112,9 +110,9 @@ public class SingleToMultipleApi {
         SingleToMultipleApi api = new SingleToMultipleApi();
 
         //启动消费者
-        //api.startConsumer();
+        api.startConsumer();
 
-        int concurrent = 1000;
+        int concurrent = 500;
         ExecutorService threadPool = Executors.newCachedThreadPool();
         CountDownLatch latch = new CountDownLatch(concurrent);
         for (int i = 0; i < concurrent; i++) {
