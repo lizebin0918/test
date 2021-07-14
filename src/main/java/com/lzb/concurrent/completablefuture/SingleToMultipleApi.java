@@ -50,11 +50,14 @@ public class SingleToMultipleApi {
         private CompletableFuture<Boolean> asyn = new CompletableFuture<>();
     }
 
+    /**
+     * 生产者添加任务到队列
+     */
     private static final ConcurrentLinkedQueue<Task> TASKS = new ConcurrentLinkedQueue<>();
 
     /**
+     * provider
      * 对外暴露的API接口，多线程入库
-     *
      * @param dto
      */
     public void insert(PersonDto dto) {
@@ -75,7 +78,10 @@ public class SingleToMultipleApi {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final int consumerSize = 2;
 
-    public void startConsumer() {
+    /**
+     * 消费者
+     */
+    public void consumer() {
         for (int i = 0; i < consumerSize; i++) {
             threadPool.execute(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
@@ -110,7 +116,7 @@ public class SingleToMultipleApi {
         SingleToMultipleApi api = new SingleToMultipleApi();
 
         //启动消费者
-        api.startConsumer();
+        api.consumer();
 
         int concurrent = 500;
         ExecutorService threadPool = Executors.newCachedThreadPool();
