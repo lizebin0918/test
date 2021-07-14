@@ -26,3 +26,6 @@
 * 分布式配置demo:[`com.lzb.zk.config`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/zk/config)
 * 分布式锁demo:[`com.lzb.zk.lock`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/zk/lock)
 
+## 同步转异步
+* 单条插入转批量:[`com.lzb.concurrent.completablefuture.SingleToMultipleApi`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/concurrent/completablefuture/SingleToMultipleApi.java)
+* 基于CountDownLatch实现同步请求，异步回应:[`com.lzb.concurrent.async.Client`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/concurrent/async/Client.java)
