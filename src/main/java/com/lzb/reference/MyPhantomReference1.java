@@ -1,9 +1,7 @@
 package com.lzb.reference;
 
-import sun.misc.Cleaner;
-
+import jdk.internal.ref.Cleaner;
 import java.lang.ref.PhantomReference;
-import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 
 /**

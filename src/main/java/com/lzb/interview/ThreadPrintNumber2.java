@@ -1,12 +1,9 @@
 package com.lzb.interview;
 
 import com.alibaba.fastjson.JSON;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 整形数组，多线程打印，每个线程打印10个数，直到打印完<br/>
