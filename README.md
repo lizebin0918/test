@@ -1,6 +1,11 @@
 # test
-日常调试程序
-
+* 日常调试程序
+* jdk14需要添加模块
+```  
+--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED 
+--add-opens=java.base/jdk.internal.ref=ALL-UNNAMED 
+-Dio.netty.tryReflectionSetAccessible=true
+```
 ## Java
 * "强软弱虚"引用:[`com.lzb.reference`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/reference)
 * 缓存行:[`com.lzb.cache_line`](https://github.com/lizebin0918/test/tree/main/src/main/java/com/lzb/cache_line)
