@@ -39,8 +39,20 @@ public class Test {
         //Stream
         Stream.of("a", "b", "c", "", "e", "f").takeWhile(s->!s.isEmpty())
             .forEach(System.out::print);
+        System.out.println("---------------");
         Stream.of("a","b","c","","e","f").dropWhile(s-> !s.isEmpty())
             .forEach(System.out::print);
+
+        Stream<Integer> unorderedList = Stream.of(1, 8, 31, 5, 7, 18, 12, 6, 2, 1, 16, 51);
+        unorderedList.dropWhile(num -> num < 10).forEach(num -> System.out.println(num + " "));
+
+        System.out.println("------------");
+
+        //Set<Integer> numbers = Set.of(2, 4, 6, 3, 8);
+        var numbers = List.of(2, 4, 6, 3, 8);
+        numbers.stream()
+            .takeWhile(n -> n % 2 == 0)
+            .forEach(System.out::println);
     }
 
 }
