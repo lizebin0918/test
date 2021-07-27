@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  *
  * @author chenpi
  */
-public class Test {
+public class TestStream {
 
     public static void main(String[] args) {
         var i = 1;
