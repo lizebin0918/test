@@ -19,6 +19,16 @@ public class TestBinary {
         System.out.println(Integer.toBinaryString(i));
         System.out.println(Integer.toBinaryString(15));
         System.out.println(15 & i);
+
+        //判断一个数的奇偶
+        int num = Integer.MAX_VALUE + 1;
+        System.out.println("num = " + num);
+        System.out.println("it is 奇数:" + ((num & 1) == 1));
+        System.out.println("it is 偶数:" + ((num & 1) == 0));
+        //判断一个数是否是2的幂次方，最高位为1，其他全0
+        int val = 6;
+        System.out.println((val & (val - 1)) == 0);
+        System.out.println((val & -val) == val);
     }
 
 }
