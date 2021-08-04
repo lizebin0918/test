@@ -1,5 +1,10 @@
 package com.lzb.goto_test;
 
+import java.util.ArrayList;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * break out;跳出out对应层的逻辑，继续执行后续逻辑<br/>
  * Created on : 2021-08-02 21:34
@@ -26,11 +31,21 @@ public class TestGoto {
         while (true) {
             System.out.println("1");
             if (args.length == 0) {
+                //continue 同理
                 break o;
             }
             System.out.println("2");
         }
         System.out.println("3");
+
+        Person p = new Person();
+
+        Predicate<Person> ageGreater14 = (item) -> item.age > 14;
+        Stream.of(p).filter(ageGreater14).collect(Collectors.toCollection(() -> new ArrayList<>(1)));
+    }
+
+    private static class Person {
+        int age;
     }
 
 }
