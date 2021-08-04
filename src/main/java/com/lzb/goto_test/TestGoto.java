@@ -8,7 +8,7 @@ package com.lzb.goto_test;
  */
 public class TestGoto {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //多层循环，跳到指定的那一层循环
         /*for (int i = 0; i < 10; i++) {
             System.out.println(i);
@@ -25,12 +25,19 @@ public class TestGoto {
         o:
         while (true) {
             System.out.println("1");
+            Thread.sleep(1000);
             if (args.length == 0) {
-                break o;
+                /* 注释 */
+                // 继续标签的位置执行
+                //continue o;
+                // 退出标签的位置
+                //break o;
             }
             System.out.println("2");
         }
-        System.out.println("3");
+        /*if (args.length == 0) {
+            System.out.println("3");
+        }*/
     }
 
 }
