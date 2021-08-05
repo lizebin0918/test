@@ -35,6 +35,10 @@ public class ThreadPrintNumber2 {
                 print(startIndex, endIndex);
             }, "线程-" + i).start();
         }
+
+        int i = 16;
+        System.out.println((i << 1) / 3);
+        System.out.println(Math.sqrt(1640531527));
     }
 
     public static void print(int startIndex, int endIndex) {
