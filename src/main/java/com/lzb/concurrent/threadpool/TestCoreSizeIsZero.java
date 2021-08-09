@@ -1,5 +1,6 @@
 package com.lzb.concurrent.threadpool;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -20,9 +21,13 @@ public class TestCoreSizeIsZero {
                 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>());
 
-        threadPool.execute(() -> {
+        // 任务在submit或者execute()就会执行，而不是get()才会执行
+        Future<Void> future = threadPool.submit(() -> {
             System.out.println("test");
+            return null;
         });
+
+        threadPool.shutdown();
 
     }
 

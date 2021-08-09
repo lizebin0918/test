@@ -1,5 +1,7 @@
 package com.lzb.concurrent.threadpool;
 
+import com.lzb.singleton.EnumSingleton;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Executors;
@@ -31,7 +33,7 @@ public class TestScheduledThreadPoolExecutor {
             }
         }, 0, 1, TimeUnit.SECONDS);
 
-        // 按照任务执行时间点执行
+        // 按照任务执行 + 固定时间执行
         scheduledExecutorService.scheduleWithFixedDelay(() -> {
             System.out.println(Thread.currentThread().getName() + " execute with fixed delay : " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             try {
