@@ -8,6 +8,8 @@ import java.util.List;
  * 虚引用<br/>
  *
  * -Xmx20M
+ * 第一个线程往集合里面塞数据，随着数据越来越多，肯定会发生GC。
+ * 第二个线程死循环，从queue里面拿数据，如果拿出来的数据不是null，就打印出来。
  *
  * Created on : 2021-05-31 22:46
  * @author lizebin
