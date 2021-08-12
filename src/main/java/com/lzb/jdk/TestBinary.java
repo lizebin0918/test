@@ -1,5 +1,7 @@
 package com.lzb.jdk;
 
+import java.util.Objects;
+
 /**
  * 二进制运算测试<br/>
  * Created on : 2021-08-03 22:33
@@ -54,6 +56,16 @@ public class TestBinary {
             // 输出:-8，补码形式运算，以原码形式打印
             System.out.println(-4 & -5);
         }
+
+        int countMask = (1 << COUNT_BITS) - 1;
+        int running = -1 << COUNT_BITS;
+        System.out.println(Integer.toBinaryString(COUNT_MASK & running));
+        int shutdown =  0 << COUNT_BITS;
+        System.out.println(Integer.toBinaryString(shutdown));
+
+        String s = null;
+        boolean isEmpty = Objects.toString(s, "").isEmpty();
+        boolean isEmpty1 = Objects.toString(s, "").isBlank();
 
 
     }

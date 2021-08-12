@@ -1,7 +1,6 @@
 package com.lzb.netty.sinoxk.common;
 
 import io.netty.buffer.ByteBuf;
-import org.apache.commons.lang3.StringUtils;
 
 public class MessageDecoder {
 
@@ -17,7 +16,7 @@ public class MessageDecoder {
     }
 
     private static Class className(String className) {
-        if (StringUtils.isEmpty(className)) {
+        if (className.isEmpty()) {
             return null;
         }
         try {
