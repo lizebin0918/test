@@ -1,8 +1,8 @@
 package com.lzb.zk.lock;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -104,7 +104,7 @@ public class WatchCallback implements Watcher,
 
     @Override
     public void processResult(int i, String path, Object o, String nodeName) {
-        if (StringUtils.isNotBlank(nodeName)) {
+        if (! StringUtils.isEmpty(nodeName)) {
             System.out.println(threadName + " create node: " + path);
             System.out.println(threadName + " create node: " + nodeName);
             zk.getChildren("/", false, this, ctx);
