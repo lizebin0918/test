@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * https://dzone.com/articles/20-examples-of-using-javas-completablefuture<br/>
  * 1.CompletableFuture由一个个CompletableStage组成，每个Stage是上一个Stage的观察者，后面同理
  * Created on : 2021-06-02 16:19
- * @author chenpi 
+ *
+ * @author chenpi
  */
 public class TestCompletableFuture {
 
@@ -57,9 +60,16 @@ public class TestCompletableFuture {
         });
 
         System.out.println("main done");
+
+        combine();
+
+        System.out.println(IntStream.iterate(0, i -> i + 1).limit(100).boxed().collect(Collectors.toList()));
+
+        parallel();
     }
 
     static AtomicBoolean FLAG = new AtomicBoolean(true);
+
     public static void test() {
         new Thread(() -> {
             while (FLAG.get()) {
@@ -82,6 +92,29 @@ public class TestCompletableFuture {
             System.out.println("flag:" + FLAG.get());
 
         }).start();
+    }
+
+    public static void combine() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread().getName() + " first task");
+            return "Hello";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread().getName() + " second task");
+            return " World";
+        }), (s1, s2) -> s1 + s2);
+
+        System.out.println(completableFuture.get());
+    }
+
+    public static void parallel() throws ExecutionException, InterruptedException {
+        CompletableFuture<Integer> task1 = CompletableFuture.supplyAsync(() -> 1);
+        CompletableFuture<String> task2 = CompletableFuture.supplyAsync(() -> "1");
+        CompletableFuture<Void> combinedFuture = CompletableFuture.allOf(task1, task2);
+
+        Void v = combinedFuture.get();
+        System.out.println("v = " + v);
+        System.out.println("task1 = " + task1.get());
+        System.out.println("task2 = " + task2.get());
     }
 
 }
