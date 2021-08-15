@@ -46,13 +46,14 @@ class ParkingSystem {
                 }
                 break;
             case 2:
-                if ((total & ((1 << (bigUnit)) - 1)) - (1 << mediumUnit) >= 0) {
+                // (1 << bigUnit) - 1) 从中车的最高位开始全部变成1，&上总数量，相当于打车位置为0，最后减掉一个中车就可以了，小车同理
+                if ((total & ((1 << bigUnit) - 1)) - (1 << mediumUnit) >= 0) {
                     total = total - (1 << mediumUnit);
                     success = true;
                 }
                 break;
             case 3:
-                if ((total & ((1 << (mediumUnit)) - 1)) - 1 >= 0) {
+                if ((total & ((1 << mediumUnit) - 1)) - 1 >= 0) {
                     total -= 1;
                     success = true;
                 }
