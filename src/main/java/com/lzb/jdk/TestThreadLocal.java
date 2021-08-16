@@ -53,6 +53,16 @@ public class TestThreadLocal {
 
         System.out.println("done");
         Thread.sleep(5000);
+
+        String s = null;
+        switch (s) {
+            case "1":
+                System.out.println("1");
+                break;
+            default:
+                System.out.println("default");
+                break;
+        }
     }
 
     public static void gc() {
