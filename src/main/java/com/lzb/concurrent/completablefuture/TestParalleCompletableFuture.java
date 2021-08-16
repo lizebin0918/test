@@ -3,8 +3,10 @@ package com.lzb.concurrent.completablefuture;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -17,10 +19,14 @@ import java.util.stream.Collectors;
  */
 public class TestParalleCompletableFuture {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         //paralleToAll();
         //paralleToAny();
+        long start = System.nanoTime();
         paralleToAllForSameResultType();
+        long end = System.nanoTime();
+        System.out.println((end - start) / (1000 * 1000L));
+
     }
 
     /**
@@ -58,8 +64,24 @@ public class TestParalleCompletableFuture {
 
     /**
      * 多个任务执行，返回相同类型的Future，最终合并
+     * Note:如果提交任务数多于本机核数，后续的任务
      */
     public static void paralleToAllForSameResultType() {
+        int taskCount = 100;
+        List<CompletableFuture<String>> tasks = new ArrayList<>(taskCount);
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        for (int i = 0; i < taskCount; i++) {
+            int taskId = i + 1;
+            tasks.add(CompletableFuture.supplyAsync(() -> {
+                task(taskId);
+                return Integer.toString(taskId);
+            }));
+        }
+        System.out.println(tasks.stream().map(CompletableFuture::join).collect(Collectors.joining(" ")));
+        threadPool.shutdown();
+    }
+
+    public static void paralleToAllForSameResultType1() {
         int taskCount = 10;
         List<CompletableFuture<String>> tasks = new ArrayList<>(taskCount);
         for (int i = 0; i < taskCount; i++) {
@@ -69,7 +91,16 @@ public class TestParalleCompletableFuture {
                 return Integer.toString(taskId);
             }));
         }
-        System.out.println(tasks.stream().map(CompletableFuture::join).collect(Collectors.joining(" ")));
+        System.out.println(allOf(tasks).join());
+    }
+
+    public static <T> CompletableFuture<List<T>> allOf(Collection<CompletableFuture<T>> futures) {
+        return futures.stream().collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                l -> CompletableFuture.allOf(l.toArray(new CompletableFuture[0]))
+                        .thenApply(v -> l.stream().map(CompletableFuture::join).collect(Collectors.toList()))
+                )
+        );
     }
 
     /**
