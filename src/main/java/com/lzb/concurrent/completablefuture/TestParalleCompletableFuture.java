@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class TestParalleCompletableFuture {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //paralleToAll();
         //paralleToAny();
         paralleToAllForSameResultType();
@@ -60,15 +58,19 @@ public class TestParalleCompletableFuture {
      * 多个任务执行，返回相同类型的Future，最终合并
      */
     public static void paralleToAllForSameResultType() {
-        int taskCount = 10;
+        int taskCount = 16;
         List<CompletableFuture<String>> tasks = new ArrayList<>(taskCount);
+        ExecutorService threadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                0L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
         for (int i = 0; i < taskCount; i++) {
             int taskId = i + 1;
             tasks.add(CompletableFuture.supplyAsync(() -> {
                 task(taskId);
                 return Integer.toString(taskId);
-            }));
+            }, threadPool));
         }
+
         System.out.println(tasks.stream().map(CompletableFuture::join).collect(Collectors.joining(" ")));
     }
 
