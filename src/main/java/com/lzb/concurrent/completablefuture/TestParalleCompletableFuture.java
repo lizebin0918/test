@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  */
 public class TestParalleCompletableFuture {
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         //paralleToAll();
         //paralleToAny();
         long start = System.nanoTime();
@@ -86,8 +87,11 @@ public class TestParalleCompletableFuture {
     }
 
     public static void paralleToAllForSameResultType1() {
-        int taskCount = 10;
+        int taskCount = 16;
         List<CompletableFuture<String>> tasks = new ArrayList<>(taskCount);
+        ExecutorService threadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                0L, TimeUnit.SECONDS,
+                new SynchronousQueue<Runnable>());
         for (int i = 0; i < taskCount; i++) {
             int taskId = i + 1;
             tasks.add(CompletableFuture.supplyAsync(() -> {
