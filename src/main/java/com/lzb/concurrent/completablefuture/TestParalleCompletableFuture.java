@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
  * 并行执行任务<br/>
  * Created on : 2021-08-16 07:36
  *
+ * 问题：
+ * 1.whenCompelete() 是表示正常完成？还是异常完成？
+ * 2.如果不指定线程池，默认的ForkJoin是守护线程？
+ *
  * @author lizebin
  */
 public class TestParalleCompletableFuture {
