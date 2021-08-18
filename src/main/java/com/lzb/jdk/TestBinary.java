@@ -67,7 +67,15 @@ public class TestBinary {
         boolean isEmpty = Objects.toString(s, "").isEmpty();
         boolean isEmpty1 = Objects.toString(s, "").isBlank();
 
+        // 无符号右移
+        int k = 1 | (1 >>> 4);
+        System.out.println("k = " + k);
 
+        // 表示运行中
+        int status = 4;
+        int runStatus = 6;
+        // (运行状态 & status) == status
+        System.out.println("isRunning = " + ((runStatus & status) == status));
     }
 
 }
