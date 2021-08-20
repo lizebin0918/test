@@ -76,6 +76,15 @@ public class TestBinary {
         int runStatus = 6;
         // (运行状态 & status) == status
         System.out.println("isRunning = " + ((runStatus & status) == status));
+
+        System.out.println(Integer.toBinaryString(-1));
+        // int类型用4个字节32位存储，如果移动位数超过最大位数，会对移动位数进行取模操作
+        // 实际是无符号右移4位:-1>>>(36%32)=-1>>>4，同理：“>>” “<<” “>>>” 也遵循这个原理。
+        // 无符号右移是表示无视符号位，右移N位，左补零，相当于把数变成正数
+        System.out.println(-1 >>> 65);
+        System.out.println(-1L >>> 65);
+
+        System.out.println(2 >> 33);
     }
 
 }
