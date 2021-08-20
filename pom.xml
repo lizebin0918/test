@@ -109,6 +109,14 @@
             <version>4.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.4.3.1</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
