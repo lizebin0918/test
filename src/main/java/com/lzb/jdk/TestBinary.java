@@ -1,5 +1,8 @@
 package com.lzb.jdk;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.nio.file.Files;
 import java.util.Objects;
 
 /**
@@ -111,6 +114,47 @@ public class TestBinary {
         System.out.println("真值：" + j);
         System.out.println("原码：" + Integer.toBinaryString(j));
         System.out.println(~j + 1);
+
+        int l = -2;
+        // 这样会报错....只能用于无符号...
+        // System.out.println(Integer.parseInt(Integer.toBinaryString(l), 2));
+        // 这样才行....丫的....基于带符号的原码.....
+        System.out.println(Integer.parseInt("-" + StringUtils.leftPad(Integer.toBinaryString(-l), 31, '0').substring(1, 32), 2));
+
+        System.out.println("------------------");
+        test();
+
+    }
+
+    /**
+     * 验证二进制规则
+     */
+    public static void test() {
+        int num = 18, ngNum = -18;
+        System.out.println("---------无符号--------");
+        System.out.println("输入数字:" + num);
+        System.out.println("原码、反码、补码：" + StringUtils.leftPad(Integer.toBinaryString(num), 32, '0'));
+        System.out.println("右移>>2:" + (num >> 2));
+        System.out.println("右移>>33:" + (num >> 33));
+        System.out.println("无符号右移>>>2:" + (num >>> 2));
+        System.out.println("无符号移>>>33:" + (num >>> 33));
+        System.out.println("左移<<2:" + (num << 2));
+        System.out.println("左移<<33:" + (num << 33));
+
+        System.out.println("---------有符号--------");
+        System.out.println("输入数字:" + ngNum);
+        System.out.println("原码:" + ("1" + StringUtils.leftPad(Integer.toBinaryString(-ngNum), 31, '0')));
+        System.out.println("反码:" + Integer.toBinaryString(~(-ngNum)));
+        System.out.println("补码:" + Integer.toBinaryString(ngNum));
+        System.out.println("右移>>2:" + (ngNum >> 2));
+        System.out.println("右移>>33:" + (ngNum >> 33));
+        System.out.println("无符号右移>>>2:" + (ngNum >>> 2));
+        System.out.println("无符号右移>>>33:" + (ngNum >>> 33));
+        System.out.println("左移<<2:" + (ngNum << 2));
+        System.out.println("左移<<33:" + (ngNum << 33));
+
+
+
     }
 
 }

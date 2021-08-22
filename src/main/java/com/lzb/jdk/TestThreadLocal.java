@@ -26,6 +26,7 @@ public class TestThreadLocal {
             }
         }*/
 
+        // 非线程池的线程结束后会自动回收ThreadLocalMap
         /*{
             for (int i = 0; i < times * 2; i++) {
                 new Thread(() -> {
@@ -51,18 +52,18 @@ public class TestThreadLocal {
             threadPool.shutdown();
         }*/
 
-        System.out.println("done");
-        Thread.sleep(5000);
-
-        String s = null;
-        switch (s) {
-            case "1":
-                System.out.println("1");
-                break;
-            default:
-                System.out.println("default");
-                break;
+        InheritableThreadLocal<String> stringInheritableThreadLocal = new InheritableThreadLocal<>();
+        stringInheritableThreadLocal.set("InheritableThreadLocal string");
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + ":" + stringInheritableThreadLocal.get());
+                gc();
+            }).start();
         }
+
+        Thread.sleep(5000);
+        System.out.println("done");
+
     }
 
     public static void gc() {
