@@ -119,10 +119,15 @@ public class TestBinary {
         // 这样会报错....只能用于无符号...
         // System.out.println(Integer.parseInt(Integer.toBinaryString(l), 2));
         // 这样才行....丫的....基于带符号的原码.....
-        System.out.println(Integer.parseInt("-" + StringUtils.leftPad(Integer.toBinaryString(-l), 31, '0').substring(1, 32), 2));
+        // System.out.println(Integer.parseInt("-" + StringUtils.leftPad(Integer.toBinaryString(-l), 31, '0').substring(1, 32), 2));
 
         System.out.println("------------------");
         test();
+
+        // 实际这是一个负零
+        System.out.println(Integer.toBinaryString(-128));
+        // 最小值会取反，但是会导致溢出又变成负数
+        System.out.println(Math.abs(Integer.MIN_VALUE));
 
     }
 
