@@ -45,6 +45,10 @@ public class Test {
         BeanUtils.copyList(a1, () -> new Integer(3));
         System.out.println(b1);
 
+        Integer i = new Integer(100);
+        org.springframework.beans.BeanUtils.copyProperties(new Integer(1), i);
+        System.out.println(i);
+
         // 给定一个值，对数组元素扣减，扣完为零
        /* int count = 3;
         List<Integer> list = Arrays.asList(1, 0, 0, 1, 1, 0, 0);
