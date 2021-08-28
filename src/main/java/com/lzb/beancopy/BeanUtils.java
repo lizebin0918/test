@@ -41,12 +41,13 @@ public class BeanUtils {
     }
 
     /**
-     * 复制非空字段
-     * 判断是否非空：org.springframework.util.ObjectUtils.isEmpty()。如果为空，通过getXXX()获取原对象的值
+     * 满足任一条件，则忽略原对象字段
+     * 1.如果字段为空。判断非空：org.springframework.util.ObjectUtils.isEmpty()
+     * 2.字段类型不一致
      * @param source
      * @param target
      */
-    public static void copyNonNull(final Object source, final Object target) {
+    public static void copyNonEmpty(final Object source, final Object target) {
         if (Objects.isNull(source) || Objects.isNull(target)) {
             return;
         }
@@ -62,7 +63,7 @@ public class BeanUtils {
              */
             @Override
             public Object convert(Object o, Class targetClass, Object setMethod) {
-                if (ObjectUtils.isEmpty(o)) {
+                if (ObjectUtils.isEmpty(o) || ! (Objects.equals(o.getClass(), targetClass))) {
                     String setMethodString = (String) setMethod;
                     String getMethodString = "g" + setMethodString.substring(1);
                     try {

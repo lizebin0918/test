@@ -6,10 +6,10 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * <br/>
@@ -44,15 +44,22 @@ public class Test {
         a.setAge(18);
         a.setBirthday(LocalDate.now());
         a.setIntegers(Arrays.asList(1, 2, 3, 4));
-        User b = new User();
-        b.setDel(false);
+        a.setId("1");
+        a.setName("name");
+        UserVo b = new UserVo();
+        b.setIsDel(false);
+        b.setId(1);
 
-        var a1 = Arrays.asList(a, b);
-        var newList = BeanUtils.copyList(a1, () -> new User());
-        System.out.println(JSON.toJSONString(newList));
+        // BeanUtils.copy(a, b);
+        // System.out.println(JSON.toJSONString(a));
+        // System.out.println(JSON.toJSONString(b));
 
-        BeanUtils.copyNonNull(a, b);
+        BeanUtils.copyNonEmpty(a, b);
         System.out.println(JSON.toJSONString(b));
+
+        /*var a1 = Arrays.asList(a, b);
+        var newList = BeanUtils.copyList(a1, () -> new UserVo());
+        System.out.println(JSON.toJSONString(newList));*/
 
         /*Integer x = 3;
         Integer y = 4;
@@ -84,6 +91,16 @@ public class Test {
 
     }
 
+    @Data
+    public static class UserVo {
+        private Integer id;
+        private String name;
+        private LocalDate birthday;
+        private Set<Integer> integers;
+        private Boolean isDel;
+    }
+
+    @Data
     public static class User {
         private String id;
         private Integer age;
@@ -91,54 +108,6 @@ public class Test {
         private LocalDate birthday;
         private List<Integer> integers;
         private Boolean isDel;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public Integer getAge() {
-            return age;
-        }
-
-        public void setAge(Integer age) {
-            this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public LocalDate getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(LocalDate birthday) {
-            this.birthday = birthday;
-        }
-
-        public List<Integer> getIntegers() {
-            return integers;
-        }
-
-        public void setIntegers(List<Integer> integers) {
-            this.integers = integers;
-        }
-
-        public Boolean getDel() {
-            return isDel;
-        }
-
-        public void setDel(Boolean del) {
-            isDel = del;
-        }
     }
 
     public static class MyConvertor implements Converter {
