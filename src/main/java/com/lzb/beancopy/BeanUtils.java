@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 import org.springframework.cglib.core.ReflectUtils;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,22 +34,23 @@ public class BeanUtils {
         if (Objects.isNull(source) || Objects.isNull(target)) {
             return;
         }
-        String key = genKey(source.getClass(), target.getClass(), false);
+        String key = genKey(source.getClass(), target.getClass(), "copy");
         BeanCopier beanCopier = BEAN_COPIER_CACHE.computeIfAbsent(key,
                 o -> BeanCopier.create(source.getClass(), target.getClass(), false));
         beanCopier.copy(source, target, null);
     }
 
     /**
-     * 浅拷贝，过滤掉【原对象】的null字段，只复制非空字段
+     * 复制非空字段
+     * 判断是否非空：org.springframework.util.ObjectUtils.isEmpty()。如果为空，通过getXXX()获取原对象的值
      * @param source
      * @param target
      */
-    public static <T> void copyNonNull(final T source, final T target) {
+    public static void copyNonNull(final Object source, final Object target) {
         if (Objects.isNull(source) || Objects.isNull(target)) {
             return;
         }
-        String key = genKey(source.getClass(), target.getClass(), true);
+        String key = genKey(source.getClass(), target.getClass(), "copyNonNull");
         BeanCopier beanCopier = BEAN_COPIER_CACHE.computeIfAbsent(key,
                 o -> BeanCopier.create(source.getClass(), target.getClass(), true));
         beanCopier.copy(source, target, new Converter() {
@@ -59,11 +62,14 @@ public class BeanUtils {
              */
             @Override
             public Object convert(Object o, Class targetClass, Object setMethod) {
-                if (Objects.isNull(o)) {
+                if (ObjectUtils.isEmpty(o)) {
                     String setMethodString = (String) setMethod;
-                    String getMethod = "g" + setMethodString.substring(1, setMethodString.length());
+                    String getMethodString = "g" + setMethodString.substring(1);
                     try {
-                        return ReflectUtils.findDeclaredMethod(target.getClass(), getMethod, null).invoke(target, null);
+                        return ReflectUtils.findDeclaredMethod(
+                                target.getClass(),
+                                getMethodString,
+                                null).invoke(target, null);
                     } catch (Exception e) {
                         // ignore exception
                     }
@@ -73,8 +79,8 @@ public class BeanUtils {
         });
     }
 
-    private static String genKey(Class<?> srcClazz, Class<?> tgtClazz, boolean useConverter) {
-        return srcClazz.getName() + tgtClazz.getName() + useConverter;
+    private static String genKey(Class<?> srcClazz, Class<?> tgtClazz, String suffix) {
+        return srcClazz.getName() + "_" + tgtClazz.getName() + "_" + suffix;
     }
 
     /**

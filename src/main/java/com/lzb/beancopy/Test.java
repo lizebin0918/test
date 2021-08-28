@@ -20,7 +20,7 @@ import java.util.Objects;
 public class Test {
 
     public static void main(String[] args) {
-        User a = new User();
+        /*User a = new User();
         a.setAge(18);
         a.setBirthday(LocalDate.now());
         User b = new User();
@@ -38,16 +38,30 @@ public class Test {
         System.out.println(JSON.toJSONString(b));
 
         BeanUtils.copy(a, b);
+        System.out.println(JSON.toJSONString(b))*/;
+
+        User a = new User();
+        a.setAge(18);
+        a.setBirthday(LocalDate.now());
+        a.setIntegers(Arrays.asList(1, 2, 3, 4));
+        User b = new User();
+        b.setDel(false);
+
+        var a1 = Arrays.asList(a, b);
+        var newList = BeanUtils.copyList(a1, () -> new User());
+        System.out.println(JSON.toJSONString(newList));
+
+        BeanUtils.copyNonNull(a, b);
         System.out.println(JSON.toJSONString(b));
 
-        List<Integer> a1 = Arrays.asList(1, 2);
-        List<Integer> b1 = new ArrayList<>();
-        BeanUtils.copyList(a1, () -> new Integer(3));
-        System.out.println(b1);
+        /*Integer x = 3;
+        Integer y = 4;
+        BeanUtils.copy(x, y);
+        System.out.println(y);
 
         Integer i = new Integer(100);
         org.springframework.beans.BeanUtils.copyProperties(new Integer(1), i);
-        System.out.println(i);
+        System.out.println(i);*/
 
         // 给定一个值，对数组元素扣减，扣完为零
        /* int count = 3;
@@ -70,12 +84,61 @@ public class Test {
 
     }
 
-    @Data
     public static class User {
         private String id;
         private Integer age;
         private String name;
         private LocalDate birthday;
+        private List<Integer> integers;
+        private Boolean isDel;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+
+        public void setAge(Integer age) {
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public LocalDate getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(LocalDate birthday) {
+            this.birthday = birthday;
+        }
+
+        public List<Integer> getIntegers() {
+            return integers;
+        }
+
+        public void setIntegers(List<Integer> integers) {
+            this.integers = integers;
+        }
+
+        public Boolean getDel() {
+            return isDel;
+        }
+
+        public void setDel(Boolean del) {
+            isDel = del;
+        }
     }
 
     public static class MyConvertor implements Converter {
