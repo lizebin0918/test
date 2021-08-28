@@ -30,7 +30,7 @@ public class BeanUtils {
      * @param source
      * @param target
      */
-    public static <T> void copy(final T source, final T target) {
+    public static void copy(final Object source, final Object target) {
         if (Objects.isNull(source) || Objects.isNull(target)) {
             return;
         }
@@ -41,7 +41,7 @@ public class BeanUtils {
     }
 
     /**
-     * 满足任一条件，则忽略原对象字段
+     * 满足任一条件，则忽略【原对象】字段
      * 1.如果字段为空。判断非空：org.springframework.util.ObjectUtils.isEmpty()
      * 2.字段类型不一致
      * @param source
@@ -63,7 +63,7 @@ public class BeanUtils {
              */
             @Override
             public Object convert(Object o, Class targetClass, Object setMethod) {
-                if (ObjectUtils.isEmpty(o) || ! (Objects.equals(o.getClass(), targetClass))) {
+                if (ObjectUtils.isEmpty(o) || !targetClass.isAssignableFrom(o.getClass())) {
                     String setMethodString = (String) setMethod;
                     String getMethodString = "g" + setMethodString.substring(1);
                     try {

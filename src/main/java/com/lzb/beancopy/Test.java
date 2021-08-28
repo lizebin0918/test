@@ -6,10 +6,7 @@ import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <br/>
@@ -46,9 +43,9 @@ public class Test {
         a.setIntegers(Arrays.asList(1, 2, 3, 4));
         a.setId("1");
         a.setName("name");
+        a.setArray(new Integer[]{1, 2});
         UserVo b = new UserVo();
         b.setIsDel(false);
-        b.setId(1);
 
         // BeanUtils.copy(a, b);
         // System.out.println(JSON.toJSONString(a));
@@ -56,6 +53,12 @@ public class Test {
 
         BeanUtils.copyNonEmpty(a, b);
         System.out.println(JSON.toJSONString(b));
+
+        System.out.println(new ArrayList<>() instanceof RandomAccess);
+
+        System.out.println(ArrayList.class.isNestmateOf(List.class));
+        System.out.println(List.class.isAssignableFrom(ArrayList.class));
+        System.out.println(ArrayList.class.isAssignableFrom(ArrayList.class));
 
         /*var a1 = Arrays.asList(a, b);
         var newList = BeanUtils.copyList(a1, () -> new UserVo());
@@ -96,8 +99,9 @@ public class Test {
         private Integer id;
         private String name;
         private LocalDate birthday;
-        private Set<Integer> integers;
+        private ArrayList<Integer> integers;
         private Boolean isDel;
+        private Integer[] array;
     }
 
     @Data
@@ -108,6 +112,7 @@ public class Test {
         private LocalDate birthday;
         private List<Integer> integers;
         private Boolean isDel;
+        private Integer[] array;
     }
 
     public static class MyConvertor implements Converter {
