@@ -27,6 +27,7 @@ public class TestTime {
         // 转换为ZonedDateTime的表示形式
         System.out.println("ZonedDateTime的表示形式：" + offsetDateTime.toZonedDateTime());
         // atZoneSameInstant()：将此日期时间与时区结合起来创建ZonedDateTime，以确保结果具有相同的Instant，(本地)当地时间点
+        // 等价于：LocalDateTime.ofInstant(Instant.ofEpochSecond(offsetDateTime.toEpochSecond()), ZoneId.systemDefault())
         System.out.println("ZonedDateTime的表示形式：" + offsetDateTime.atZoneSameInstant(ZoneId.systemDefault()));// 北京时间
         System.out.println("ZoneId.of(\"America/New_York\")-ZonedDateTime的表示形式：" + offsetDateTime.atZoneSameInstant(ZoneId.of("America/New_York")));// 纽约时间
         // atZoneSimilarLocal：将此日期时间与时区结合起来创建ZonedDateTime，以确保结果具有相同的本地时间，
