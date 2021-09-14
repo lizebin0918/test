@@ -25,13 +25,13 @@ public class TestTimeout {
         CompletableFuture<List<String>> f2 = CompletableFuture.supplyAsync(() -> select());
 
         long start = System.nanoTime();
-        CompletableFuture.allOf(f1, f2).get(2, TimeUnit.SECONDS);
+        CompletableFuture.allOf(f1, f2).getNow(null);
         long end = System.nanoTime();
 
         System.out.println("sleep :" + (end - start) / 1000 / 1000L);
 
-        System.out.println(f1.get());
-        System.out.println(f2.get());
+        System.out.println(f1.getNow(Collections.emptyList()));
+        System.out.println(f2.getNow(Collections.emptyList()));
     }
 
     public static List<String> select() {
