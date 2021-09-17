@@ -1,6 +1,8 @@
 package com.lzb.geek_time.design_pattern.perfection.v1;
 
 
+import com.lzb.geek_time.design_pattern.perfection.v2.RequestStat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

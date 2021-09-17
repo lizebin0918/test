@@ -1,6 +1,9 @@
 package com.lzb.geek_time.design_pattern.perfection.v1;
 
 
+import com.lzb.geek_time.design_pattern.perfection.v2.RequestInfo;
+import com.lzb.geek_time.design_pattern.perfection.v2.RequestStat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,6 +1,11 @@
 package com.lzb.geek_time.design_pattern.perfection.v1;
 
 
+import com.lzb.geek_time.design_pattern.perfection.v2.MetricsCollector;
+import com.lzb.geek_time.design_pattern.perfection.v2.MetricsStorage;
+import com.lzb.geek_time.design_pattern.perfection.v2.RedisMetricsStorage;
+import com.lzb.geek_time.design_pattern.perfection.v2.RequestInfo;
+
 /**
  * Created by WenTaoKing on 2020/2/7
  * description: 运用学过的设计原则和思想重构之前讲的性能计数器项目
