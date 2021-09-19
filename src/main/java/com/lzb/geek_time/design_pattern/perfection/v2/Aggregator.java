@@ -1,75 +1,76 @@
 package com.lzb.geek_time.design_pattern.perfection.v2;
 
-import java.util.Collections;
-import java.util.Comparator;
+
+import com.lzb.geek_time.design_pattern.perfection.v1.RequestInfo;
+import com.lzb.geek_time.design_pattern.perfection.v1.RequestStat;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * author: WentaoKing
- * created on: 2020/1/2
- * description: 负责根据原始数据计算统计数据
- *
- * Aggregator 类是一个工具类，里面只有一个静态函数，
- * 有 50 行左右的代码量，负责各种统计数据的计算。当需要扩展新的统计功能的时候，
- * 需要修改 aggregate() 函数代码，并且一旦越来越多的统计功能添加进来之后，
- * 这个函数的代码量会持续增加，可读性、可维护性就变差了。
- * 所以，这个类的设计可能存在职责不够单一、不易扩展等问题，需要在之后的版本中，对其结构做优化。
+ * Created by WenTaoKing on 2020/2/7
+ * description: 根据原始数据，计算得到统计数据。
+ * 我们可以将这部分逻辑移动到 Aggregator 类中。这样 Aggregator 类就不仅仅是只包含统计方法的工具类了
  */
-
 public class Aggregator {
-    public static RequestStat aggregate(List<RequestInfo> requestInfos, long durationInSeconds) {
-        double maxRespTime = Double.MIN_VALUE;
-        double minRespTime = Double.MAX_VALUE;
-        double avgRespTime = -1;
-        double p999RespTime = -1;
-        double p99RespTime = -1;
-        double sumRespTime = 0;
-        long count = 0;
+
+    public Map<String, RequestStat> aggregate(Map<String, List<RequestInfo>> requestInfos, long durationInMillis) {
+        Map<String, RequestStat> requestStats = new HashMap<>();
+        for (Map.Entry<String, List<RequestInfo>> entry : requestInfos.entrySet()) {
+            String apiName = entry.getKey();
+            List<RequestInfo> requestInfosPerApi = entry.getValue();
+            RequestStat requestStat =
+                    doAggregate(requestInfosPerApi, durationInMillis);
+            requestStats.put(apiName, requestStat);
+        }
+        return requestStats;
+    }
+
+    private RequestStat doAggregate(List<RequestInfo> requestInfos, long durationInMillis) {
+        List<Double> respTimes = new ArrayList<>();
         for (RequestInfo requestInfo : requestInfos) {
-            ++count;
             double respTime = requestInfo.getResponseTime();
-            if (maxRespTime < respTime) {
-                maxRespTime = respTime;
-            }
-            if (minRespTime > respTime) {
-                minRespTime = respTime;
-            }
-            sumRespTime += respTime;
-        }
-        if (count != 0) {
-            avgRespTime = sumRespTime / count;
-        }
-        long tps = (long) (count / durationInSeconds);
-
-        Collections.sort(requestInfos, new Comparator<RequestInfo>() {
-            @Override
-            public int compare(RequestInfo o1, RequestInfo o2) {
-                double diff = o1.getResponseTime() - o2.getResponseTime();
-                if (diff < 0.0) {
-                    return -1;
-                } else if (diff > 0.0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        if (count != 0) {
-            int idx999 = (int) (count * 0.999);
-            int idx99 = (int) (count * 0.99);
-            p999RespTime = requestInfos.get(idx999).getResponseTime();
-            p99RespTime = requestInfos.get(idx99).getResponseTime();
+            respTimes.add(respTime);
         }
         RequestStat requestStat = new RequestStat();
-        requestStat.setMaxResponseTime(maxRespTime);
-        requestStat.setMinResponseTime(minRespTime);
-        requestStat.setAvgResponseTime(avgRespTime);
-        requestStat.setP999ResponseTime(p999RespTime);
-        requestStat.setP99ResponseTime(p99RespTime);
-        requestStat.setCount(count);
-        requestStat.setTps(tps);
+        requestStat.setMaxResponseTime(max(respTimes));
+        requestStat.setMinResponseTime(min(respTimes));
+        requestStat.setAvgResponseTime(avg(respTimes));
+        requestStat.setP999ResponseTime(percentile999(respTimes));
+        requestStat.setP99ResponseTime(percentile99(respTimes));
+        requestStat.setCount(respTimes.size());
+        requestStat.setTps((long) tps(respTimes.size(), durationInMillis / 1000));
         return requestStat;
     }
-}
 
+    // 以下的函数的代码实现均省略...
+    private double max(List<Double> dataset) {
+        return 1.0;
+    }
+
+    private double min(List<Double> dataset) {
+        return 1.0;
+    }
+
+    private double avg(List<Double> dataset) {
+        return 1.0;
+    }
+
+    private double tps(int count, double duration) {
+        return 1.0;
+    }
+
+    private double percentile999(List<Double> dataset) {
+        return 1.0;
+    }
+
+    private double percentile99(List<Double> dataset) {
+        return 1.0;
+    }
+
+    private double percentile(List<Double> dataset, double ratio) {
+        return 1.0;
+    }
+}

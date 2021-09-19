@@ -1,7 +1,7 @@
-package com.lzb.geek_time.design_pattern.perfection.v1;
+package com.lzb.geek_time.design_pattern.perfection.v2;
 
 
-import com.lzb.geek_time.design_pattern.perfection.v2.RequestStat;
+import com.lzb.geek_time.design_pattern.perfection.v1.RequestStat;
 
 import java.util.ArrayList;
 import java.util.List;

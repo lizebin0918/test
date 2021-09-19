@@ -1,4 +1,4 @@
-package com.lzb.geek_time.design_pattern.perfection.v2;
+package com.lzb.geek_time.design_pattern.perfection.v1;
 
 /**
  * author: WentaoKing

@@ -1,4 +1,4 @@
-package com.lzb.geek_time.design_pattern.perfection.v1;
+package com.lzb.geek_time.design_pattern.perfection.v2;
 
 /**
  * Created by WenTaoKing on 2020/2/7

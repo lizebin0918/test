@@ -1,10 +1,10 @@
-package com.lzb.geek_time.design_pattern.perfection.v1;
+package com.lzb.geek_time.design_pattern.perfection.v2;
 
 
-import com.lzb.geek_time.design_pattern.perfection.v2.MetricsCollector;
-import com.lzb.geek_time.design_pattern.perfection.v2.MetricsStorage;
-import com.lzb.geek_time.design_pattern.perfection.v2.RedisMetricsStorage;
-import com.lzb.geek_time.design_pattern.perfection.v2.RequestInfo;
+import com.lzb.geek_time.design_pattern.perfection.v1.MetricsCollector;
+import com.lzb.geek_time.design_pattern.perfection.v1.MetricsStorage;
+import com.lzb.geek_time.design_pattern.perfection.v1.RedisMetricsStorage;
+import com.lzb.geek_time.design_pattern.perfection.v1.RequestInfo;
 
 /**
  * Created by WenTaoKing on 2020/2/7
