@@ -22,7 +22,7 @@ public class TestInterrupt {
             int i = 1 / 0;
 
             System.out.println("end sleep");
-        }, threadPool).exceptionallyAsync(e -> {
+        }, threadPool).exceptionally(e -> {
             System.out.println("exception:" + e);
             System.out.println("--------");
             e.printStackTrace();
