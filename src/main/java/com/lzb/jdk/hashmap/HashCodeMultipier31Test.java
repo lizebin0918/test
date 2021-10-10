@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 生成 hashcode 的乘数为31<br/>
+ * 生成 hashcode 的乘数为什么是31<br/>
  * Created on : 2021-10-10 20:44
  *
  * @author lizebin

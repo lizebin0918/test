@@ -25,8 +25,10 @@ public class DisturbanceFunctionTest {
         }
 
         for (String word : words) {
-            int idx = Disturb.disturbHashIdx(word, 128);
-            // int idx = Disturb.hashIdx(word, 128);
+            // 扰动函数生成
+            // int idx = Disturb.disturbHashIdx(word, 128);
+            // 直接用hashCode生成
+            int idx = Disturb.hashIdx(word, 128);
             if (map.containsKey(idx)) {
                 Integer i = map.get(idx);
                 map.put(idx, ++i);
