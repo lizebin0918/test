@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <br/>
+ * 扰动函数测试，hashcode的高低16位做异或，分布会更加均匀<br/>
  * Created on : 2021-10-06 23:56
  *
  * @author lizebin
  */
-public class Test {
+public class DisturbanceFunctionTest {
 
     public static void main(String[] args) {
         // 扰动函数真的可以让散列更加均匀？
