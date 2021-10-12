@@ -1,4 +1,4 @@
-package com.lzb.loadtest;
+package com.lzb.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
