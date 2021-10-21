@@ -1,5 +1,11 @@
 package com.lzb.jdk.threadlocal;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 黄金分割比<br/>
  * Created on : 2021-10-03 10:11
@@ -24,6 +30,10 @@ package com.lzb.jdk.threadlocal;
  */
 public class GoldenRatio {
 
+    private Product[] PRODUCT_ARRAY = new Product[128];
+
+    private static final int CAPACITY = 100;
+
     public static void main(String[] args) throws Exception {
         //黄金分割数 * 2的32次方 = 2654435769 - 这个是无符号32位整数的黄金分割数对应的那个值
         long c = (long) ((1L << 32) * (Math.sqrt(5) - 1) / 2);
@@ -37,6 +47,13 @@ public class GoldenRatio {
         // 例如我分了16个从库，如何把请求均匀打到不同的数据库
         // 对应抽奖概率，均匀散列到数组里面
         test();
+
+        Product aP = new Product(1, "A", 30);
+        Product bP = new Product(2, "B", 45);
+        Product cP = new Product(3, "C", 25);
+
+
+
     }
 
     private static final int HASH_INCREMENT = 0x61c88647;
@@ -55,6 +72,17 @@ public class GoldenRatio {
             System.out.print(" ");
         }
         System.out.println();
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class Product {
+        private Integer id;
+        private String name;
+        /**
+         * 概率：30%
+         */
+        private int rate;
     }
 
 }
