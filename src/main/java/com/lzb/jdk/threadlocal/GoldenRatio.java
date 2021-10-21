@@ -1,10 +1,16 @@
 package com.lzb.jdk.threadlocal;
 
+import com.alibaba.fastjson.JSON;
+import com.lzb.beancopy.BeanUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * 黄金分割比<br/>
@@ -30,7 +36,7 @@ import java.util.List;
  */
 public class GoldenRatio {
 
-    private Product[] PRODUCT_ARRAY = new Product[128];
+    private static final Product[] PRODUCT_ARRAY = new Product[128];
 
     private static final int CAPACITY = 100;
 
@@ -48,12 +54,24 @@ public class GoldenRatio {
         // 对应抽奖概率，均匀散列到数组里面
         test();
 
-        Product aP = new Product(1, "A", 30);
-        Product bP = new Product(2, "B", 45);
-        Product cP = new Product(3, "C", 25);
+        List<Product> productList = new ArrayList<>();
+        productList.add(new Product(1, "A", 30));
+        productList.add(new Product(2, "B", 45));
+        productList.add(new Product(3, "C", 25));
 
+        int curIdx = 0;
+        for (int j = 0; j < productList.size(); j++) {
+            Product p = productList.get(j);
+            for (int k = curIdx; k < p.rate + curIdx; k++) {
+                PRODUCT_ARRAY[productHashCode(k)] = BeanUtils.copy(p, Product::new);
+            }
+            curIdx += p.rate;
+        }
 
+        // 占用128个槽位
+        System.out.println(JSON.toJSONString(PRODUCT_ARRAY));
 
+        System.out.println(Stream.of(PRODUCT_ARRAY).filter(Objects::nonNull).count());
     }
 
     private static final int HASH_INCREMENT = 0x61c88647;
@@ -62,6 +80,10 @@ public class GoldenRatio {
         hashCode(4);
         hashCode(16);
         hashCode(32);
+    }
+
+    private static int productHashCode(int index) throws Exception {
+        return ((index + 1) * HASH_INCREMENT) & (PRODUCT_ARRAY.length - 1);
     }
 
     private static void hashCode(int capacity) throws Exception {
@@ -76,6 +98,8 @@ public class GoldenRatio {
 
     @Data
     @AllArgsConstructor
+    @ToString
+    @NoArgsConstructor
     private static class Product {
         private Integer id;
         private String name;
@@ -83,6 +107,8 @@ public class GoldenRatio {
          * 概率：30%
          */
         private int rate;
+
+
     }
 
 }
