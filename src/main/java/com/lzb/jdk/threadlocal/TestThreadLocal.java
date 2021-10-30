@@ -1,4 +1,4 @@
-package com.lzb.jdk;
+package com.lzb.jdk.threadlocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +83,4 @@ public class TestThreadLocal {
             e.printStackTrace();
         }
     }
-
 }
