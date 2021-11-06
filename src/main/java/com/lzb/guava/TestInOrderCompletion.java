@@ -1,4 +1,4 @@
-package com.lzb.concurrent.completablefuture;
+package com.lzb.guava;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableList;
