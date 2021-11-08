@@ -1,6 +1,10 @@
 package com.lzb.jdk;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,11 +41,11 @@ public class TestStream {
         System.out.println(intList2.stream().filter(Predicate.not(String::isBlank)).collect(Collectors.toList()));
 
         //Stream
-        Stream.of("a", "b", "c", "", "e", "f").takeWhile(s->!s.isEmpty())
-            .forEach(System.out::print);
+        Stream.of("a", "b", "c", "", "e", "f").takeWhile(s -> !s.isEmpty())
+                .forEach(System.out::print);
         System.out.println("---------------");
-        Stream.of("a","b","c","","e","f").dropWhile(s-> !s.isEmpty())
-            .forEach(System.out::print);
+        Stream.of("a", "b", "c", "", "e", "f").dropWhile(s -> !s.isEmpty())
+                .forEach(System.out::print);
 
         Stream<Integer> unorderedList = Stream.of(1, 8, 31, 5, 7, 18, 12, 6, 2, 1, 16, 51);
         unorderedList.dropWhile(num -> num < 10).forEach(num -> System.out.println(num + " "));
@@ -51,8 +55,8 @@ public class TestStream {
         //Set<Integer> numbers = Set.of(2, 4, 6, 3, 8);
         var numbers = List.of(2, 4, 6, 3, 8);
         numbers.stream()
-            .takeWhile(n -> n % 2 == 0)
-            .forEach(System.out::println);
-    }
+                .takeWhile(n -> n % 2 == 0)
+                .forEach(System.out::println);
 
+    }
 }

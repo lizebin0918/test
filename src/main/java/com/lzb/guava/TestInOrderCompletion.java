@@ -49,7 +49,15 @@ public class TestInOrderCompletion {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        }, 2)
+                        }, 2),
+                        listeningExecutorService.submit(() -> {
+                            try {
+                                Thread.sleep(1000);
+                                System.out.println(Thread.currentThread().getName() + "@777");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }, 1)
                 )
         );
         listenableFutureList.forEach(p -> {
@@ -87,13 +95,13 @@ public class TestInOrderCompletion {
 
     public static CompletableFuture<Integer> task(int i) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println(Thread.currentThread().getName() + ":开始睡眠" + i + "秒" );
+            System.out.println(Thread.currentThread().getName() + ":开始睡眠" + i + "秒");
             try {
                 Thread.sleep(i * 1000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + ":结束睡眠" + i + "秒" );
+            System.out.println(Thread.currentThread().getName() + ":结束睡眠" + i + "秒");
             return i;
         });
     }
