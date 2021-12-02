@@ -1,9 +1,6 @@
 package com.lzb.jdk;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 
 /**
  * 测试时间工具类<br/>
@@ -35,6 +32,13 @@ public class TestTime {
         System.out.println("ZoneId.of(\"America/New_York\")-ZonedDateTime的表示形式：" + offsetDateTime.atZoneSimilarLocal(ZoneId.of("America/New_York")));// 纽约时间
         // OffsetDateTime = LocalDateTime + 偏移量ZoneOffset；ZonedDateTime = LocalDateTime + 时区ZoneId
         //OffsetDateTime可以随意设置偏移值，但ZonedDateTime无法自由设置偏移值，因为此值是由时区ZoneId控制的
+
+        // Z表示零时区，前端提交的参数
+        OffsetDateTime oft = OffsetDateTime.parse("2021-12-08T15:59:59.000Z");
+        System.out.println(oft);
+
+        offsetDateTime = OffsetDateTime.parse("2021-12-08T15:59:59.000Z");
+        System.out.println(LocalDateTime.ofInstant(Instant.ofEpochSecond(offsetDateTime.toEpochSecond()), ZoneId.systemDefault()));
     }
 
 }
