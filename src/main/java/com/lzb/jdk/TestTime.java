@@ -1,6 +1,7 @@
 package com.lzb.jdk;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 测试时间工具类<br/>
@@ -39,6 +40,28 @@ public class TestTime {
 
         offsetDateTime = OffsetDateTime.parse("2021-12-08T15:59:59.000Z");
         System.out.println(LocalDateTime.ofInstant(Instant.ofEpochSecond(offsetDateTime.toEpochSecond()), ZoneId.systemDefault()));
+
+        // 带偏移量的格式：2021-12-03T08:35:30.092297+08:00
+        System.out.println(OffsetDateTime.now());
+        // 只是把当前时间改成UTC时间
+        System.out.println(OffsetDateTime.now().withOffsetSameLocal(ZoneOffset.UTC));
+        // 根据当前时间的时间戳，转成UTC时间
+        System.out.println(OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC));
+
+        String format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        System.out.println(OffsetDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+        // 2021-12-03T08:47:58.930004+08:00
+        System.out.println(OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+        // 2021-12-03T08:47:58.930098+08:00
+        System.out.println(OffsetDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+
+        // 2021-12-03T08:47:58.930184+08:00
+        System.out.println(OffsetDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+
+        // 2021-12-03T00:47:58.930Z UTC时间
+        System.out.println(OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern(format)));
     }
 
 }
