@@ -36,7 +36,7 @@ public class TestTime {
 
         // Z表示零时区，前端提交的参数
         OffsetDateTime oft = OffsetDateTime.parse("2021-12-08T15:59:59.000Z");
-        System.out.println(oft);
+        System.out.println("前端返回零时区时间：" + oft);
 
         offsetDateTime = OffsetDateTime.parse("2021-12-08T15:59:59.000Z");
         System.out.println(LocalDateTime.ofInstant(Instant.ofEpochSecond(offsetDateTime.toEpochSecond()), ZoneId.systemDefault()));
