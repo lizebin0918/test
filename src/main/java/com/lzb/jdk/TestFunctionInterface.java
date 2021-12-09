@@ -7,6 +7,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -24,6 +25,22 @@ public class TestFunctionInterface {
         System.out.println(JSON.toJSONString(order));
         System.out.println("orderDetailList:" + JSON.toJSONString(order.getOrderDetailList()));
         System.out.println(order.getOrderDetailList() == order.getOrderDetailList());
+
+        testConsumerLink();
+    }
+
+    /**
+     * Consumer链式调用
+     */
+    public static void testConsumerLink() {
+        //当前值
+        Consumer<Integer> consumer1 = x -> System.out.println("当前值 : " + x);
+        //相加
+        Consumer<Integer> consumer2 = x -> { System.out.println("相加 : " + (x + x)); };
+        //相乘
+        Consumer<Integer> consumer3 = x -> System.out.println("相乘 : " + x * x);
+        //andThen拼接
+        consumer1.andThen(consumer2).andThen(consumer3).accept(1);
     }
 
     public static List<OrderDetail> listOrderDetail() {
