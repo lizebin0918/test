@@ -1,18 +1,31 @@
 package com.lzb.mockito;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoAnnotationTest {
+
+    @BeforeEach
+    public void setup() {
+
+    }
+
+    @TempDir
+    private File tempDir;
 
     @Test
     public void test_add_list() {
@@ -24,6 +37,18 @@ public class MockitoAnnotationTest {
         //verification
         verify(mockedList).add("one");
         verify(mockedList).clear();
+
+        // 构建行为
+        // when(repository.save(any())).then(returnsFirstArg());
+
+        // 真正执行的逻辑
+        // TodoItem item = service.addTodoItem(TodoParameter.of("foo"));
+
+        // 判断执行返回值
+        // assertThat(item.getContent()).isEqualTo("foo");
+
+        // Verify方法用于检查是否发生了某些行为。我们可以在测试方法代码的末尾使用Mockito验证方法，以确保调用了指定的方法。
+        // verify(repository).save(any());
     }
 
     /**

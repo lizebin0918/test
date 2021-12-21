@@ -30,7 +30,8 @@ public class Test2 {
 
         testMod3();
         testMod5();
-        PrintFizzBuzz.print();
+        Assert.isTrue(PrintFizzBuzz.format(1, 3).equals("12Fizz"));
+        Assert.isTrue(PrintFizzBuzz.format(1, 5).equals("12Fizz4Buzz"));
 
     }
 
@@ -60,12 +61,12 @@ public class Test2 {
 
         public static final String BUZZ = "Buzz";
 
-        public static void print() {
+        public static String format(int min, int max) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 1; i <= 100; i++) {
+            for (int i = min; i <= max; i++) {
                 sb.append(format(i));
             }
-            System.out.println(sb);
+            return sb.toString();
         }
 
         private static final Predicate<Integer> isMod3 = (n) -> n % 3 == 0;
@@ -78,9 +79,15 @@ public class Test2 {
         private static final Predicate<Integer> isMod5 = (n) -> n % 5 == 0;
         private static final Predicate<Integer> isEnd5 = (n) -> String.valueOf(n).endsWith("5");
         private static final Function<Integer, String> end5 = n -> {
-            if (isMod5.or(isEnd5).test(n)) return BUZZ;
+            if (isMod3Or5(n)) {
+                return BUZZ;
+            }
             return "";
         };
+
+        private static boolean isMod3Or5(Integer n) {
+            return isMod5.or(isEnd5).test(n);
+        }
 
         private static final List<Function<Integer, String>> FUNCTION_LIST = List.of(end3, end5);
 
