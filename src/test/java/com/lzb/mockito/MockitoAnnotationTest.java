@@ -1,27 +1,39 @@
 package com.lzb.mockito;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
+/**
+ * 使用mockito
+ * 1.@RunWith(MockitoJUnitRunner.class)
+ * 2.MockitoAnnotations.initMocks(this); and @Mock
+ * 3.@Rule
+ * private MockitoRule mockitoRule = MockitoJUnit.rule();
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoAnnotationTest {
 
-    @BeforeEach
-    public void setup() {
+    @Rule
+    private MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @TempDir
