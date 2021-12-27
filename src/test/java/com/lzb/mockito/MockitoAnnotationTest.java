@@ -1,6 +1,10 @@
 package com.lzb.mockito;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.Invocation;
 import org.mockito.invocation.InvocationOnMock;
@@ -10,16 +14,48 @@ import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.Stubbing;
 
 import java.util.ArrayList;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
+/**
+ * 使用mockito
+ * 1.@RunWith(MockitoJUnitRunner.class)
+ * 2.MockitoAnnotations.initMocks(this); and @Mock
+ * 3.@Rule
+ * private MockitoRule mockitoRule = MockitoJUnit.rule();
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoAnnotationTest {
+
+    // @Rule
+    // private MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    private List<String> list;
+
+    @Before
+    public void setup() {
+        // MockitoAnnotations.initMocks(this);
+        this.list = mock(ArrayList.class);
+    }
+
+    @After
+    public void after() {
+        reset(list);
+    }
+
+    @TempDir
+    private File tempDir;
 
     @Test
     public void test_add_list() {
@@ -31,6 +67,18 @@ public class MockitoAnnotationTest {
         //verification
         verify(mockedList).add("one");
         verify(mockedList).clear();
+
+        // 构建行为
+        // when(repository.save(any())).then(returnsFirstArg());
+
+        // 真正执行的逻辑
+        // TodoItem item = service.addTodoItem(TodoParameter.of("foo"));
+
+        // 判断执行返回值
+        // assertThat(item.getContent()).isEqualTo("foo");
+
+        // Verify方法用于检查是否发生了某些行为。我们可以在测试方法代码的末尾使用Mockito验证方法，以确保调用了指定的方法。
+        // verify(repository).save(any());
     }
 
     /**
@@ -93,5 +141,20 @@ public class MockitoAnnotationTest {
         assertTrue(list.add("1"));
     }
 
+    @Test
+    public void test_how_to_use_stubbing() {
+        when(list.get(0)).thenReturn("first");
+        assertThat(list.get(0), equalTo("first"));
+
+        when(list.get(anyInt())).thenThrow(new RuntimeException());
+        try {
+            String first = list.get(0);
+            // 如果没有抛异常则执行失败
+            fail();
+        } catch (Exception e) {
+            assertThat(e, instanceOf(RuntimeException.class));
+        }
+
+    }
 
 }
