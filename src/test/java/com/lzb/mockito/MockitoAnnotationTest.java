@@ -2,13 +2,20 @@ package com.lzb.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.Invocation;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.quality.Strictness;
+import org.mockito.stubbing.Answer;
+import org.mockito.stubbing.Stubbing;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,6 +75,22 @@ public class MockitoAnnotationTest {
         //验证结果
         System.out.println("result = " + result);
         assertEquals("hello world world",result);
+    }
+
+    @Test
+    public void test_sleep() {
+        List<String> list = mock(ArrayList.class);
+        when(list.add(anyString())).thenAnswer(new Answer<Boolean>() {
+            @Override
+            public Boolean answer(InvocationOnMock invocationOnMock) throws Throwable {
+                System.out.println("开始睡眠");
+                Thread.sleep(1000);
+                System.out.println("结束睡眠");
+                return true;
+            }
+        });
+
+        assertTrue(list.add("1"));
     }
 
 
