@@ -203,4 +203,14 @@ public class MockitoAnnotationTest {
 
     }
 
+    @Test
+    public void test_customize_answer() {
+        List<String> list = mock(ArrayList.class);
+        when(list.get(anyInt())).thenAnswer(mock -> {
+            Integer p = mock.getArgument(0);
+            return p.toString() + p.toString();
+        });
+        assertThat(list.get(0), equalTo("00"));
+    }
+
 }
