@@ -211,6 +211,10 @@ public class MockitoAnnotationTest {
             return p.toString() + p.toString();
         });
         assertThat(list.get(0), equalTo("00"));
+
+        when(list.get(anyInt())).thenCallRealMethod();
+        // 抛异常：IndexOutOfBoundsException
+        assertThat(list.get(0), equalTo("0"));
     }
 
 }
