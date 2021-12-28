@@ -21,8 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -34,6 +33,7 @@ import static org.mockito.Mockito.*;
  * 2.MockitoAnnotations.initMocks(this); and @Mock
  * 3.@Rule
  * private MockitoRule mockitoRule = MockitoJUnit.rule();
+ * 4.stubbing:"录制"和"播放"
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MockitoAnnotationTest {
@@ -217,4 +217,18 @@ public class MockitoAnnotationTest {
         assertThat(list.get(0), equalTo("0"));
     }
 
+    @Test
+    public void test_spy() {
+        List<String> list = spy(ArrayList.class);
+        // 如果是mock(ArrayList.class)，执行对应对象的所有方法都不会返回
+        // 但是spy(ArrayList.class) 会执行真正的方法，实现部分mock()
+        list.add("a");
+
+        assertThat(list.size(), greaterThanOrEqualTo(0));
+        assertThat(list.get(0), equalTo("a"));
+
+        when(list.get(0)).thenReturn("b");
+        assertThat(list.get(0), equalTo("b"));
+
+    }
 }
