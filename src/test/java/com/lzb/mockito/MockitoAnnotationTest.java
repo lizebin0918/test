@@ -125,6 +125,9 @@ public class MockitoAnnotationTest {
         assertEquals("hello world world",result);
     }
 
+    /**
+     * 自定义返回
+     */
     @Test
     public void test_sleep() {
         List<String> list = mock(ArrayList.class);
@@ -154,6 +157,49 @@ public class MockitoAnnotationTest {
         } catch (Exception e) {
             assertThat(e, instanceOf(RuntimeException.class));
         }
+
+    }
+
+    @Test
+    public void test_how_to_stubbing_void_method() {
+        List<String> list = mock(ArrayList.class);
+        doNothing().when(list).clear();
+        list.clear();
+        // 验证clear执行次数
+        verify(list, atLeast(1)).clear();
+    }
+
+    @Test
+    public void test_do_return_then_return() {
+        List<String> list = mock(ArrayList.class);
+        doReturn("first").when(list).get(0);
+        when(list.get(1)).thenReturn("second");
+
+        assertThat(list.get(0), equalTo("first"));
+        assertThat(list.get(1), equalTo("second"));
+
+    }
+
+    /**
+     * 多次调用
+     */
+    @Test
+    public void test_iterate() {
+        List<String> list = mock(ArrayList.class);
+        when(list.size()).thenReturn(1);
+        when(list.size()).thenReturn(2);
+        when(list.size()).thenReturn(3);
+        // 这样是覆盖
+        when(list.size()).thenReturn(4);
+
+        assertThat(list.size(), equalTo(4));
+
+        when(list.get(0)).thenReturn("1").thenReturn("2").thenReturn("3").thenReturn("4");
+        when(list.get(0)).thenReturn("1", "2", "3", "4");
+        assertThat(list.get(0), equalTo("1"));
+        assertThat(list.get(0), equalTo("2"));
+        assertThat(list.get(0), equalTo("3"));
+        assertThat(list.get(0), equalTo("4"));
 
     }
 
