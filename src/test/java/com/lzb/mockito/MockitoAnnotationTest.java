@@ -231,4 +231,24 @@ public class MockitoAnnotationTest {
         assertThat(list.get(0), equalTo("b"));
 
     }
+
+    /**
+     * 返回目标值
+     */
+    @Test
+    public void test_return_target_value() {
+        List<String> list = mock(ArrayList.class);
+
+        // 任意下标都是返回"a"
+        when(list.get(anyInt())).thenReturn("a");
+        assertThat(list.get(0), equalTo("a"));
+        assertThat(list.get(1), equalTo("a"));
+
+        // 指定下标返回"b"
+        reset(list);
+        when(list.get(anyInt())).thenReturn("a");
+        when(list.get(eq(100))).thenReturn("b");
+        assertThat(list.get(0), equalTo("a"));
+        assertThat(list.get(100), equalTo("b"));
+    }
 }
