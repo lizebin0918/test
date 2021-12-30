@@ -251,4 +251,17 @@ public class MockitoAnnotationTest {
         assertThat(list.get(0), equalTo("a"));
         assertThat(list.get(100), equalTo("b"));
     }
+
+    @Test
+    public void test_return_void() {
+        List<String> list = mock(ArrayList.class);
+        doNothing().when(list).clear();
+
+        list.add("a");
+        list.get(0);
+        list.clear();
+
+        verify(list, atLeast(1)).clear();
+
+    }
 }
