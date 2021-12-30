@@ -20,8 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -109,6 +108,7 @@ public class MockitoAnnotationTest {
         //If your code cares what get(0) returns, then something else breaks (often even before verify() gets executed).
         //If your code doesn't care what get(0) returns, then it should not be stubbed. Not convinced? See here.
         // 确保验证get(0)被执行
+        mockedList.get(0);
         verify(mockedList).get(0);
     }
 
@@ -147,7 +147,7 @@ public class MockitoAnnotationTest {
     @Test
     public void test_how_to_use_stubbing() {
         when(list.get(0)).thenReturn("first");
-        assertThat(list.get(0), equalTo("first"));
+        assertThat(list.get(0)).isEqualTo("first");
 
         when(list.get(anyInt())).thenThrow(new RuntimeException());
         try {
@@ -155,7 +155,7 @@ public class MockitoAnnotationTest {
             // 如果没有抛异常则执行失败
             fail();
         } catch (Exception e) {
-            assertThat(e, instanceOf(RuntimeException.class));
+            assertThat(e).isInstanceOf(RuntimeException.class);
         }
 
     }
@@ -175,8 +175,8 @@ public class MockitoAnnotationTest {
         doReturn("first").when(list).get(0);
         when(list.get(1)).thenReturn("second");
 
-        assertThat(list.get(0), equalTo("first"));
-        assertThat(list.get(1), equalTo("second"));
+        assertThat(list.get(0)).isEqualTo("first");
+        assertThat(list.get(1)).isEqualTo("second");
 
     }
 
@@ -192,14 +192,14 @@ public class MockitoAnnotationTest {
         // 这样是覆盖
         when(list.size()).thenReturn(4);
 
-        assertThat(list.size(), equalTo(4));
+        assertThat(list.size()).isEqualTo(4);
 
         when(list.get(0)).thenReturn("1").thenReturn("2").thenReturn("3").thenReturn("4");
         when(list.get(0)).thenReturn("1", "2", "3", "4");
-        assertThat(list.get(0), equalTo("1"));
-        assertThat(list.get(0), equalTo("2"));
-        assertThat(list.get(0), equalTo("3"));
-        assertThat(list.get(0), equalTo("4"));
+        assertThat(list.get(0)).isEqualTo("1");
+        assertThat(list.get(0)).isEqualTo("2");
+        assertThat(list.get(0)).isEqualTo("3");
+        assertThat(list.get(0)).isEqualTo("4");
 
     }
 
@@ -210,11 +210,11 @@ public class MockitoAnnotationTest {
             Integer p = mock.getArgument(0);
             return p.toString() + p.toString();
         });
-        assertThat(list.get(0), equalTo("00"));
+        assertThat(list.get(0)).isEqualTo("00");
 
         when(list.get(anyInt())).thenCallRealMethod();
         // 抛异常：IndexOutOfBoundsException
-        assertThat(list.get(0), equalTo("0"));
+        // assertThat(list.get(0)).isEqualTo("0");
     }
 
     @Test
@@ -224,11 +224,11 @@ public class MockitoAnnotationTest {
         // 但是spy(ArrayList.class) 会执行真正的方法，实现部分mock()
         list.add("a");
 
-        assertThat(list.size(), greaterThanOrEqualTo(0));
-        assertThat(list.get(0), equalTo("a"));
+        assertThat(list.size()).isGreaterThanOrEqualTo(0);
+        assertThat(list.get(0)).isEqualTo("a");
 
         when(list.get(0)).thenReturn("b");
-        assertThat(list.get(0), equalTo("b"));
+        assertThat(list.get(0)).isEqualTo("b");
 
     }
 
@@ -241,15 +241,15 @@ public class MockitoAnnotationTest {
 
         // 任意下标都是返回"a"
         when(list.get(anyInt())).thenReturn("a");
-        assertThat(list.get(0), equalTo("a"));
-        assertThat(list.get(1), equalTo("a"));
+        assertThat(list.get(0)).isEqualTo("a");
+        assertThat(list.get(1)).isEqualTo("a");
 
         // 指定下标返回"b"
         reset(list);
         when(list.get(anyInt())).thenReturn("a");
         when(list.get(eq(100))).thenReturn("b");
-        assertThat(list.get(0), equalTo("a"));
-        assertThat(list.get(100), equalTo("b"));
+        assertThat(list.get(0)).isEqualTo("a");
+        assertThat(list.get(100)).isEqualTo("b");
     }
 
     @Test
