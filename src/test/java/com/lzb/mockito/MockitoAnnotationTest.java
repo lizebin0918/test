@@ -13,12 +13,9 @@ import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.Stubbing;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -250,6 +247,7 @@ public class MockitoAnnotationTest {
         when(list.get(eq(100))).thenReturn("b");
         assertThat(list.get(0)).isEqualTo("a");
         assertThat(list.get(100)).isEqualTo("b");
+        assertThat(list.get(100)).isEqualTo("b");
     }
 
     @Test
@@ -263,5 +261,14 @@ public class MockitoAnnotationTest {
 
         verify(list, atLeast(1)).clear();
 
+    }
+
+    @Test
+    public void test_return_random() {
+        List<String> list = mock(ArrayList.class);
+        Random random = new Random();
+        // 返回缓存值
+        when(list.get(eq(100))).thenReturn(String.valueOf(random.nextInt(100)));
+        assertThat(list.get(100)).isEqualTo(list.get(100));
     }
 }
