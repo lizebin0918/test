@@ -16,6 +16,7 @@ import org.mockito.stubbing.Stubbing;
 import java.util.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -270,5 +271,19 @@ public class MockitoAnnotationTest {
         // 返回缓存值
         when(list.get(eq(100))).thenReturn(String.valueOf(random.nextInt(100)));
         assertThat(list.get(100)).isEqualTo(list.get(100));
+    }
+
+    @Test
+    public void test_increment() {
+        List<Integer> list = mock(ArrayList.class);
+        when(list.get(anyInt())).thenAnswer(new Answer<Integer>() {
+            private final AtomicInteger counter = new AtomicInteger();
+            @Override
+            public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return counter.incrementAndGet();
+            }
+        });
+        assertThat(list.get(0)).isEqualTo(1);
+        assertThat(list.get(0)).isEqualTo(2);
     }
 }
