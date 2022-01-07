@@ -1,27 +1,23 @@
 package com.lzb.mockito;
 
+import com.alibaba.fastjson.JSON;
+import com.lzb.javers.Person;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.Invocation;
+import org.mockito.ArgumentMatcher;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
-import org.mockito.stubbing.Stubbing;
 
-import java.util.*;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -310,5 +306,40 @@ public class MockitoAnnotationTest {
         assertThat(map.get("1")).isEqualTo(3);
         assertThat(map.get("2")).isEqualTo(1);
 
+    }
+
+    /**
+     * 测试person.id=1的用例
+     */
+    @Test
+    public void test_person_field() {
+        Map<Person, Integer> map = mock(HashMap.class);
+        when(map.get(argThat(new PersonIdMatcher(any(Person.class))))).thenAnswer(new Answer<Integer>() {
+            @Override
+            public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+                System.out.println(JSON.toJSONString(invocationOnMock));
+                return ((Person)invocationOnMock.getArgument(0)).getId();
+            }
+        });
+
+        Person p1 = new Person();
+        p1.setId(1);
+        assertThat(map.get(p1)).isEqualTo(1);
+        p1.setId(2);
+        assertThat(map.get(p1)).isEqualTo(2);
+    }
+
+    public static class PersonIdMatcher implements ArgumentMatcher<Person> {
+
+        private final Person left;
+
+        public PersonIdMatcher(Person left) {
+            this.left = left;
+        }
+
+        @Override
+        public boolean matches(Person person) {
+            return Objects.equals(left.getId(), person.getId());
+        }
     }
 }
