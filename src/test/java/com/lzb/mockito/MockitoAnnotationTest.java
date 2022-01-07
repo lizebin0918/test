@@ -286,4 +286,29 @@ public class MockitoAnnotationTest {
         assertThat(list.get(0)).isEqualTo(1);
         assertThat(list.get(0)).isEqualTo(2);
     }
+
+    @Test
+    public void test_id_increment() {
+        Map<String, Integer> map = mock(HashMap.class);
+        when(map.get(anyString())).thenAnswer(new Answer<Integer>() {
+            private final Map<String, AtomicInteger> innerMap = new HashMap<>();
+            @Override
+            public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+                String key = invocationOnMock.getArgument(0);
+                /*AtomicInteger counter = innerMap.get(key);
+                if (Objects.isNull(counter)) {
+                    counter = new AtomicInteger();
+                    innerMap.put(key, counter);
+                }*/
+                // 等价上面的代码
+                return innerMap.computeIfAbsent(key, (k) -> new AtomicInteger()).incrementAndGet();
+            }
+        });
+
+        assertThat(map.get("1")).isEqualTo(1);
+        assertThat(map.get("1")).isEqualTo(2);
+        assertThat(map.get("1")).isEqualTo(3);
+        assertThat(map.get("2")).isEqualTo(1);
+
+    }
 }

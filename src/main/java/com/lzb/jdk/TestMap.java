@@ -2,6 +2,7 @@ package com.lzb.jdk;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 测试映射<br/>
@@ -17,10 +18,18 @@ public class TestMap {
         map.put("d", 4);
         map.put("c", 4);
 
-        //compute:对key的value计算，返回新的value。如果key不存在，对value操作会抛异常
+        //compute:对key的value计算，返回新的value。
         /*map.compute("b", (k, v) -> {
             //返回新的value
             return 3;
+        });*/
+        /*map.compute("a", (k, v) -> {
+            return v + 1;
+        });*/
+
+        // 如果key不存在，对value操作会抛异常
+        /*map.compute("b", (k, v) -> {
+            return v + 1;
         });*/
 
         //computeIfPresent:key存在才会计算
@@ -29,9 +38,9 @@ public class TestMap {
         });*/
 
         //computeIfPresent:key不存在才会计算
-        /*map.computeIfAbsent("d", (k) -> {
+        map.computeIfAbsent("d", (k) -> {
             return 4;
-        });*/
+        });
 
         //replace:替换新的值
         //map.replace("c", "c");
