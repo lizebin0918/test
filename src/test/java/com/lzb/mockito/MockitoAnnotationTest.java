@@ -5,6 +5,7 @@ import com.lzb.javers.Person;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -17,7 +18,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -116,7 +116,7 @@ public class MockitoAnnotationTest {
         String result = iterator.next() + " " + iterator.next() + " " + iterator.next();
         //验证结果
         System.out.println("result = " + result);
-        assertEquals("hello world world",result);
+        Assertions.assertEquals("hello world world", result);
     }
 
     /**
@@ -135,21 +135,21 @@ public class MockitoAnnotationTest {
             }
         });
 
-        assertTrue(list.add("1"));
+        Assertions.assertTrue(list.add("1"));
     }
 
     @Test
     public void test_how_to_use_stubbing() {
         when(list.get(0)).thenReturn("first");
-        assertThat(list.get(0)).isEqualTo("first");
+        Assertions.assertEquals(list.get(0), "first");
 
         when(list.get(anyInt())).thenThrow(new RuntimeException());
         try {
             String first = list.get(0);
             // 如果没有抛异常则执行失败
-            fail();
+            Assertions.fail();
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(RuntimeException.class);
+            Assertions.assertEquals(e.getClass(), RuntimeException.class);
         }
 
     }
@@ -169,8 +169,8 @@ public class MockitoAnnotationTest {
         doReturn("first").when(list).get(0);
         when(list.get(1)).thenReturn("second");
 
-        assertThat(list.get(0)).isEqualTo("first");
-        assertThat(list.get(1)).isEqualTo("second");
+        Assertions.assertEquals(list.get(0), "first");
+        Assertions.assertEquals(list.get(1), "second");
 
     }
 
@@ -186,14 +186,14 @@ public class MockitoAnnotationTest {
         // 这样是覆盖
         when(list.size()).thenReturn(4);
 
-        assertThat(list.size()).isEqualTo(4);
+        //assertThat(list.size()).isEqualTo(4);
 
         when(list.get(0)).thenReturn("1").thenReturn("2").thenReturn("3").thenReturn("4");
         when(list.get(0)).thenReturn("1", "2", "3", "4");
-        assertThat(list.get(0)).isEqualTo("1");
-        assertThat(list.get(0)).isEqualTo("2");
-        assertThat(list.get(0)).isEqualTo("3");
-        assertThat(list.get(0)).isEqualTo("4");
+        //assertThat(list.get(0)).isEqualTo("1");
+        //assertThat(list.get(0)).isEqualTo("2");
+        //assertThat(list.get(0)).isEqualTo("3");
+        //assertThat(list.get(0)).isEqualTo("4");
 
     }
 
@@ -342,4 +342,5 @@ public class MockitoAnnotationTest {
             return Objects.equals(left.getId(), person.getId());
         }
     }
+
 }
