@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -16,8 +17,11 @@ import org.mockito.stubbing.Answer;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -135,7 +139,7 @@ public class MockitoAnnotationTest {
             }
         });
 
-        Assertions.assertTrue(list.add("1"));
+        assertTrue(list.add("1"));
     }
 
     @Test
@@ -314,11 +318,18 @@ public class MockitoAnnotationTest {
     @Test
     public void test_person_field() {
         Map<Person, Integer> map = mock(HashMap.class);
-        when(map.get(argThat(new PersonIdMatcher(any(Person.class))))).thenAnswer(new Answer<Integer>() {
+        /*
+        verify(mockService).methodA(argThat((List ids) -> ids.get(0).equals("123"))
+          , argThat((int b) -> b < 1);
+         */
+        when(map.get(argThat((Person p) -> Objects.equals(p.getId(), 1)))).thenAnswer(new Answer<Integer>() {
             @Override
             public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
-                System.out.println(JSON.toJSONString(invocationOnMock));
-                return ((Person)invocationOnMock.getArgument(0)).getId();
+                Object[] arguments = invocationOnMock.getArguments();
+                if (Objects.nonNull(arguments) && arguments.length > 0) {
+                    return ((Person)arguments[0]).getId();
+                }
+                return null;
             }
         });
 
@@ -326,21 +337,14 @@ public class MockitoAnnotationTest {
         p1.setId(1);
         assertThat(map.get(p1)).isEqualTo(1);
         p1.setId(2);
-        assertThat(map.get(p1)).isEqualTo(2);
+        assertThat(map.get(p1)).isNull();
     }
 
-    public static class PersonIdMatcher implements ArgumentMatcher<Person> {
-
-        private final Person left;
-
-        public PersonIdMatcher(Person left) {
-            this.left = left;
-        }
-
-        @Override
-        public boolean matches(Person person) {
-            return Objects.equals(left.getId(), person.getId());
-        }
+    @Test
+    public void test_any() {
+        Assertions.assertAll(Stream.<Executable>of(
+                () -> assertTrue(true),
+                () -> assertFalse(false)));
     }
 
 }
