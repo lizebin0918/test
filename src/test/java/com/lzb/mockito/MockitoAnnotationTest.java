@@ -322,22 +322,24 @@ public class MockitoAnnotationTest {
         verify(mockService).methodA(argThat((List ids) -> ids.get(0).equals("123"))
           , argThat((int b) -> b < 1);
          */
-        when(map.get(argThat((Person p) -> Objects.equals(p.getId(), 1)))).thenAnswer(new Answer<Integer>() {
+        /*when(map.get(argThat((Person p) -> Objects.equals(p.getId(), 1)))).thenAnswer(new Answer<Integer>() {
             @Override
             public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Object[] arguments = invocationOnMock.getArguments();
                 if (Objects.nonNull(arguments) && arguments.length > 0) {
                     return ((Person)arguments[0]).getId();
                 }
-                return null;
+                return 2;
             }
-        });
+        }).thenReturn(2);*/
+        when(map.get(any(Person.class))).thenReturn(2);
+        when(map.get(argThat((Person p) -> Objects.equals(p.getId(), 1)))).thenReturn(1);
 
         Person p1 = new Person();
         p1.setId(1);
         assertThat(map.get(p1)).isEqualTo(1);
         p1.setId(2);
-        assertThat(map.get(p1)).isNull();
+        assertThat(map.get(p1)).isEqualTo(2);
     }
 
     @Test
