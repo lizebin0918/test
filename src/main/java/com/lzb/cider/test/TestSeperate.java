@@ -36,7 +36,7 @@ public class TestSeperate {
             totalList.get(index).add(sourceList.get(i));
         }*/
 
-        // 方法二：双指针遍历
+        // 方法二：双指针遍历，在原集合中遍历，前后指针同时往前移动
         int step = size / count, surplus = size % count, index = 0;
         for (int i = 0; i < count; i++) {
             totalList.add(sourceList.subList(index, index += step + (surplus-- > 0 ? 1 : 0)));
