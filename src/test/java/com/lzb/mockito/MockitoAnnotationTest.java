@@ -251,6 +251,9 @@ public class MockitoAnnotationTest {
         assertThat(list.get(100)).isEqualTo("b");
     }
 
+    /**
+     * 无返回值
+     */
     @Test
     public void test_return_void() {
         List<String> list = mock(ArrayList.class);
