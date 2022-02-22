@@ -1,7 +1,11 @@
 package com.lzb.interview;
 
+import com.alibaba.fastjson.JSON;
+import lombok.RequiredArgsConstructor;
+
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 /**
  * A、B、C 3个线程分别打印100个数，A线程打印0,1,2，B线程打印3,4,5，C线程打印6,7,8....<br/>
@@ -11,21 +15,16 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ThreadPrintNumber5 {
 
     private static final ReentrantLock lock = new ReentrantLock();
-    private static Condition conditionA = lock.newCondition();
-    private static Condition conditionB = lock.newCondition();
-    private static Condition conditionC = lock.newCondition();
+    private static final Condition conditionA = lock.newCondition();
+    private static final Condition conditionB = lock.newCondition();
+    private static final Condition conditionC = lock.newCondition();
 
-    private static int[] array = new int[100];
-
-    static {
-        for (int i = 0; i < array.length; i++) {
-            array[i] = i;
-        }
-    }
+    private static final int[] array = Stream.iterate(0, n -> n + 1).limit(100).mapToInt(Integer::intValue).toArray();
 
     private static final int threadSize = 3;
 
     public static void main(String[] args) throws InterruptedException {
+
         Thread a = new Thread(new A());
         Thread b = new Thread(new B());
         Thread c = new Thread(new C());
@@ -34,11 +33,8 @@ public class ThreadPrintNumber5 {
         b.start();
         c.start();
 
-        a.join();
-        b.join();
-        c.join();
+        Thread.sleep(10000000);
 
-        System.out.println("done");
     }
 
     private static class A implements Runnable {
@@ -103,4 +99,5 @@ public class ThreadPrintNumber5 {
             }
         }
     }
+
 }
