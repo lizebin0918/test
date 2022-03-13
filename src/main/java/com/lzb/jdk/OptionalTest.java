@@ -40,6 +40,7 @@ public class OptionalTest {
     /**
      * 收件人地址
      */
+    @Getter
     @AllArgsConstructor
     private static class ReceiverAddress {
 

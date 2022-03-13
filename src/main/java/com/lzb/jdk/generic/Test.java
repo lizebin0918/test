@@ -1,9 +1,8 @@
-package com.lzb.generic;
+package com.lzb.jdk.generic;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.val;
 
 import java.util.ArrayList;
 import java.util.List;
