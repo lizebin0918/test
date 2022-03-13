@@ -14,9 +14,8 @@ import java.util.Optional;
 public class Test {
 
     public static void main(String[] args) {
-        Person p = new Person(1L);
-        p.setName("name");
-        p.setAge(18);
+
+        Person p = Person.builder().name("name").age(18).id(1L).build();
 
         String jsonString = JSON.toJSONString(p);
         System.out.println("原字符串:" + jsonString);
@@ -27,14 +26,12 @@ public class Test {
 
     }
 
-    /**
-     * 无参构造：用于JSON序列化
-     */
-    //@NoArgsConstructor
-    /**
-     * 有参构造：传入必填字段
-     */
-    @Data
+    // 用于外部取值
+    @Getter
+    // 用于手动设值，配合 @NonNull
+    @Builder
+    // 用于JSON反序列化
+    @AllArgsConstructor
     public static class Person {
 
         @NonNull
@@ -43,7 +40,6 @@ public class Test {
         private String name;
 
         private Integer age;
-
 
     }
 
