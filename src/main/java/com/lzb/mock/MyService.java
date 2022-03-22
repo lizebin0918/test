@@ -8,11 +8,13 @@ package com.lzb.mock;
  */
 public class MyService {
 
+    private MyDao dao = new MyDao();
+
     /**
      * method with common method invoke
      */
-    public String should_mock_common_method() {
-        return "anything".trim() + "__" + "anything".substring(1, 2) + "__" + "abc".startsWith("ab");
+    public String string() {
+        return dao.should_mock_common_method();
     }
 
 }

@@ -5,7 +5,6 @@ import com.alibaba.testable.core.annotation.MockInvoke;
 import com.alibaba.testable.core.model.LogLevel;
 import org.junit.Test;
 
-import static com.alibaba.testable.core.matcher.InvocationVerifier.verifyInvoked;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -20,6 +19,7 @@ public class MyServiceTest {
     MyService myService = new MyService();
 
     public static class Mock {
+
         @MockInvoke(targetClass = String.class)
         private String substring(int i, int j) {
             return "sub_string";
@@ -34,14 +34,17 @@ public class MyServiceTest {
         private boolean startsWith(String s) {
             return false;
         }
+
+        @MockInvoke(targetClass = MyDao.class)
+        private String should_mock_common_method() {
+            return "a";
+        }
     }
 
     @Test
     public void test_should_mock_common_method() {
-        assertEquals("trim_string__sub_string__false", myService.should_mock_common_method());
-        verifyInvoked("trim").withTimes(1);
-        verifyInvoked("sub").withTimes(1);
-        verifyInvoked("startsWith").withTimes(1);
+        System.out.println(myService.string());
+        assertEquals("a", myService.string());
     }
 
 }
