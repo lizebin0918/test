@@ -6,28 +6,12 @@ package com.lzb.mock;
  *
  * @author lizebin
  */
-public class MyService implements IMyService {
-
-    /**
-     * 返回固定字符串
-     * @return
-     */
-    public static String staticReturnString() {
-        return "a";
-    }
-
-    /**
-     * 返回字符串
-     * @return
-     */
-    public String returnString() {
-        return "b";
-    }
+public class MyService {
 
     /**
      * method with common method invoke
      */
-    public String commonFunc() {
+    public String should_mock_common_method() {
         return "anything".trim() + "__" + "anything".substring(1, 2) + "__" + "abc".startsWith("ab");
     }
 
