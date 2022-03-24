@@ -58,5 +58,10 @@ public class TestStream {
                 .takeWhile(n -> n % 2 == 0)
                 .forEach(System.out::println);
 
+        List<Integer> l1 = Arrays.asList(1, 2, 3, 4);
+        System.out.println("peek-count");
+        // 并不会遍历打印。peek只是用于debug
+        System.out.println(l1.stream().peek(System.out::println).count());
+
     }
 }

@@ -24,6 +24,10 @@ public class Test {
         Person p2 = JSON.parseObject(jsonString, Person.class);
         System.out.println(JSON.toJSONString(p2));
 
+        assert p2 == null : "1234";
+
+        System.out.println("123");
+
     }
 
     // 用于外部取值
