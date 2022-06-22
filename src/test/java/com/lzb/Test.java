@@ -1,5 +1,8 @@
 package com.lzb;
 
+import com.alibaba.fastjson.JSON;
+
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,7 +14,7 @@ import java.util.stream.Stream;
  */
 public class Test {
 
-    private static final Person p = new Person("0", "0");
+    private static final Person p = new Person("0", "0", 1);
 
     public static void main(String[] args) {
         for (int i = 0; i < 1000; i++) {
@@ -25,6 +28,8 @@ public class Test {
 
         System.out.println("main done");
 
+        Person lizebin = new Person("lizebin", "18", null);
+        System.out.println(JSON.toJSONString(lizebin));
     }
 
     public static void stepOne() {
@@ -38,9 +43,15 @@ public class Test {
 
     private static class Person {
         private String name, age;
-        public Person(String name, String age) {
+        private Integer ttt;
+        public Person(String name, String age, Integer ttt) {
             this.name = name;
             this.age = age;
+            this.ttt = ttt;
+        }
+
+        public Optional<Integer> getTtt() {
+            return Optional.ofNullable(ttt);
         }
 
         public String getName() {
