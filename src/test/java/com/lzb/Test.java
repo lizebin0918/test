@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  */
 public class Test {
 
-    private static final Person p = new Person("0", "0");
+    private static final Person p = new Person("0", "0", 1);
 
     public static void main(String[] args) {
         for (int i = 0; i < 1000; i++) {

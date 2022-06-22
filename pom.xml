@@ -176,9 +176,8 @@
         </dependency>
         <dependency>
             <groupId>org.jeasy</groupId>
-            <artifactId>easy-random</artifactId>
+            <artifactId>easy-random-core</artifactId>
             <version>5.0.0</version>
-            <type>pom</type>
         </dependency>
 
         <dependency>
