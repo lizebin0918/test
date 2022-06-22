@@ -5,6 +5,8 @@ import com.alibaba.testable.core.annotation.MockInvoke;
 import com.alibaba.testable.core.model.LogLevel;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -46,5 +48,6 @@ public class MyServiceTest {
         System.out.println(myService.string());
         assertEquals("a", myService.string());
     }
+
 
 }
