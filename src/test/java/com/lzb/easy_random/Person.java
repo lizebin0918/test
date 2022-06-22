@@ -1,6 +1,9 @@
 package com.lzb.easy_random;
 
 import lombok.Data;
+import org.jeasy.random.annotation.Randomizer;
+
+import java.util.List;
 
 /**
  * <br/>
@@ -13,7 +16,8 @@ public class Person {
 
     private String name;
     private Integer age;
-
+    private Gender gender;
+    private List<String> cards;
 
 
 }
