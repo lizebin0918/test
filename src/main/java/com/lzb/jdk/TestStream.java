@@ -1,5 +1,7 @@
 package com.lzb.jdk;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionService;
@@ -42,10 +44,10 @@ public class TestStream {
 
         //Stream
         Stream.of("a", "b", "c", "", "e", "f").takeWhile(s -> !s.isEmpty())
-                .forEach(System.out::print);
+            .forEach(System.out::print);
         System.out.println("---------------");
         Stream.of("a", "b", "c", "", "e", "f").dropWhile(s -> !s.isEmpty())
-                .forEach(System.out::print);
+            .forEach(System.out::print);
 
         Stream<Integer> unorderedList = Stream.of(1, 8, 31, 5, 7, 18, 12, 6, 2, 1, 16, 51);
         unorderedList.dropWhile(num -> num < 10).forEach(num -> System.out.println(num + " "));
@@ -55,13 +57,38 @@ public class TestStream {
         //Set<Integer> numbers = Set.of(2, 4, 6, 3, 8);
         var numbers = List.of(2, 4, 6, 3, 8);
         numbers.stream()
-                .takeWhile(n -> n % 2 == 0)
-                .forEach(System.out::println);
+            .takeWhile(n -> n % 2 == 0)
+            .forEach(System.out::println);
 
         List<Integer> l1 = Arrays.asList(1, 2, 3, 4);
         System.out.println("peek-count");
         // 并不会遍历打印。peek只是用于debug
         System.out.println(l1.stream().peek(System.out::println).count());
 
+        System.out.println(splitToSet("1,2,3,4"));
+    }
+
+    /**
+     * 分开设置
+     *
+     * @param ids id
+     * @return {@link Set}<{@link Long}>
+     */
+    private static Set<Long> splitToSet(String ids) {
+        /**
+         * 原写法
+         * String[] stringIds = StringUtils.split(ids, COMMA);
+         *         if (Objects.nonNull(stringIds)) {
+         *             return Stream.of(stringIds)
+         *                 .filter(StringUtils::isNumeric)
+         *                 .map(Long::valueOf)
+         *                 .collect(Collectors.toSet());
+         *         }
+         */
+        return Stream.ofNullable(StringUtils.split(ids, ","))
+            .flatMap(Stream::of)
+            .filter(StringUtils::isNumeric)
+            .map(Long::valueOf)
+            .collect(Collectors.toSet());
     }
 }
