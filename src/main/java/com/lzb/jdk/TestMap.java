@@ -38,9 +38,11 @@ public class TestMap {
         });*/
 
         //computeIfPresent:key不存在才会计算
-        map.computeIfAbsent("d", (k) -> {
-            return 4;
+        Integer d = map.computeIfAbsent("z", (k) -> {
+            System.out.println("123");
+            return 5;
         });
+        System.out.println("d = " + d);
 
         //replace:替换新的值
         //map.replace("c", "c");
