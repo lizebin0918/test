@@ -1,4 +1,4 @@
-package com.lzb.cider.bean;
+package com.lzb.company.bean;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

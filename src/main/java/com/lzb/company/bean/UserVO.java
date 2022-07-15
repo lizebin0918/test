@@ -1,4 +1,4 @@
-package com.lzb.cider.bean;
+package com.lzb.company.bean;
 
 import lombok.Data;
 

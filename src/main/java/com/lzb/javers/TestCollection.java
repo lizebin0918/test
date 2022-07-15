@@ -1,20 +1,15 @@
 package com.lzb.javers;
 
 import com.alibaba.fastjson.JSON;
-import com.lzb.cider.bean.OrderDO;
 import org.javers.core.CommitIdGenerator;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Change;
 import org.javers.core.diff.Diff;
-import org.javers.core.diff.changetype.PropertyChange;
 import org.javers.core.diff.changetype.ValueChange;
-import org.javers.core.diff.changetype.container.ListChange;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import static org.javers.core.diff.ListCompareAlgorithm.LEVENSHTEIN_DISTANCE;
