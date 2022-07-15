@@ -1,6 +1,7 @@
 package com.lzb.concurrent.threadpool;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import jodd.system.SystemUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ExecutorService;
@@ -38,6 +39,14 @@ public class TestThreadName {
             log.info("test");
         });
         Thread.sleep(10000);
+
+        int i = 2;
+        if (i == 1)
+            System.out.println("a");
+            // 会打印....
+            System.out.println("b");
+        System.out.println("c");
+
     }
 
 }
