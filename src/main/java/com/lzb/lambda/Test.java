@@ -1,6 +1,7 @@
 package com.lzb.lambda;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * <br/>
@@ -25,9 +26,14 @@ public class Test {
 
         Thread.onSpinWait();
 
+        // 没啥特别...
+        Object o2 = (Runnable)(() -> user.getId());
 
-
+        int[] array = new int[]{1, 2, 3};
+        bubble(Test::swap, array);
+        System.out.println("swap array:" + Arrays.toString(array));
     }
+
     private static class User {
         int id;
         public User(int id) {
@@ -37,5 +43,25 @@ public class Test {
             System.out.println(id);
         }
     }
+
+    interface SwapFunc {
+        void swap(int i, int j, int[] array);
+    }
+
+    private static void swap(int i, int j, int[] array) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    /**
+     * 这样也行？？我去...
+     * @param func
+     * @param array
+     */
+    public static void bubble(SwapFunc func, int... array) {
+        func.swap(0, 1, array);
+    }
+
 
 }
