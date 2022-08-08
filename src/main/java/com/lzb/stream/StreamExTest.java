@@ -59,6 +59,9 @@ public class StreamExTest {
         nameToPersons.put("second", persons2);
         Map<Person, List<String>> users2Persons = EntryStream.of(nameToPersons).flatMapValues(List::stream).invert().grouping();
 
+        // mapFirst 替换第一个元素
+        System.out.println(JSON.toJSONString(StreamEx.of(persons).mapFirst(p -> new Person(Integer.MAX_VALUE, "max_value")).toList()));
+
     }
 
 }
