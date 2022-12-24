@@ -10,8 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ThreadLocalRandomTest {
 
-    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
-
     /**
      * 错误示例
      *
@@ -24,7 +22,8 @@ public class ThreadLocalRandomTest {
         for (int i = 0; i < 4; ++i) {
             new Thread(() -> {
                 for (int j = 0; j < 5; ++j) {
-                    System.out.println(Thread.currentThread().getName() + "第" + j + "个:" + RANDOM.nextInt(1000));
+                    System.out.println(Thread.currentThread().getName() + "第" + j + "个:" + ThreadLocalRandom.current()
+                            .nextInt(1000));
                 }
             }, "thread" + i).start();
         }
