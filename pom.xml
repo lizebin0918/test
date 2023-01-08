@@ -192,6 +192,19 @@
             <version>0.8.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.approvaltests</groupId>
+            <artifactId>approvaltests</artifactId>
+            <version>18.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.8.11</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
