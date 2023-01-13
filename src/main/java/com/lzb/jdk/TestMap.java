@@ -1,8 +1,10 @@
 package com.lzb.jdk;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 测试映射<br/>
@@ -66,8 +68,33 @@ public class TestMap {
             return oldValue + newValue;
         });*/
 
-        System.out.println(map);
+        // 通过merge实现group by
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        list.add(3);
+        list.add(4);
+        list.add(4);
+        list.add(4);
+        Map<Integer, Integer> num2Count = new HashMap<>();
+        list.forEach(i -> {
+            num2Count.merge(i, 1, Integer::sum);
+        });
+        System.out.println("num2Count:" + num2Count);
 
+        Map<Integer, Integer> num2Count1 = new HashMap<>();
+        list.forEach(i -> {
+            num2Count1.compute(i, (key, value) -> {
+                System.out.println("--------");
+                System.out.println("key:" + key);
+                System.out.println("value:" + value);
+                return Optional.ofNullable(value).orElse(0) + key;
+            });
+        });
+        System.out.println("num2Count1:" + num2Count1);
+
+        System.out.println(map);
 
     }
 
