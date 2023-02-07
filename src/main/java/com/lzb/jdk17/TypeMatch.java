@@ -1,8 +1,6 @@
 package com.lzb.jdk17;
 
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * 模式匹配<br/>
@@ -26,12 +24,13 @@ public class TypeMatch {
 	}
 
 	public static String format(Object o) {
-		return switch (o) {
+		/*return switch (o) {
 			case null -> "";
 			case Number n -> NumberFormat.getNumberInstance().format(n);
 			case LocalDateTime t -> t.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 			default -> o.toString();
-		};
+		};*/
+		return null;
 	}
 
 }

@@ -14,7 +14,7 @@ public class MyOrderDao {
     }
 
     public void doDelete(List<String> a) {
-
+        System.out.println("doDelete");
     }
 
 }

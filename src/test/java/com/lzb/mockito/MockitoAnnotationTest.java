@@ -43,7 +43,7 @@ public class MockitoAnnotationTest {
     @Before
     public void setup() {
         // MockitoAnnotations.initMocks(this);
-        this.list = mock(ArrayList.class);
+        // this.list = mock(List.class);
     }
 
     @After
@@ -176,6 +176,12 @@ public class MockitoAnnotationTest {
         Assertions.assertEquals(list.get(0), "first");
         Assertions.assertEquals(list.get(1), "second");
 
+    }
+
+    @Test
+    public void should_doCallRealMethod() {
+        MyOrderDao myOrderDao = mock(MyOrderDao.class);
+        doCallRealMethod().when(myOrderDao).doDelete(null);
     }
 
     /**
