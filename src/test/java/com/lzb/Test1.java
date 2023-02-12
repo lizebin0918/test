@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  *
  * @author lizebin
  */
-public class Test {
+public class Test1 {
 
     private static final Person p = new Person("0", "0", 1);
 
@@ -21,7 +21,7 @@ public class Test {
             int j = i;
             System.out.println("i--------->" + i);
             stepOne();
-            Stream.of(j).map(Test::stepTwo).collect(Collectors.toList());
+            Stream.of(j).map(Test1::stepTwo).collect(Collectors.toList());
             p.setAge(String.valueOf(j));
             p.setName(String.valueOf(j));
         }

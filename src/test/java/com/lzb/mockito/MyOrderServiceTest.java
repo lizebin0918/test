@@ -13,7 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +64,19 @@ class MyOrderServiceTest {
         verify(myOrderDao).doDelete(orderDaoArg2.capture());
         assertArrayEquals(new String[]{"ab"}, orderDaoArg2.getValue().toArray(String[]::new));
 
+    }
+
+    @Test
+    public void inner_param() {
+        // 模拟 myOrderDao 返回值，并且mock掉返回对象，厉害...
+        Order orderMock = mock(Order.class);
+        doCallRealMethod().when(orderMock).cancel();
+        doReturn(orderMock).when(myOrderDao).get(eq(1L));
+
+        // 模拟内部 Order 行为
+        myOrderService.deleteById("a");
+
+        verify(orderMock).cancel();
     }
 
 }
