@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
- * <br/>
+ * 只要里面的变量要作为参数传递，大部分场景都可以拿到参数验证<br/>
  * Created on : 2023-02-07 23:05
  * @author lizebin
  */
