@@ -19,6 +19,9 @@ public class MyOrderService {
         String b = a + "b";
         String c = b + "c";
 
+        Order order = myOrderDao.get(1L);
+        order.cancel();
+
         myOrderDao.doDelete(Collections.singletonList(b));
 
         return myOrderDao.doDelete(b, c);

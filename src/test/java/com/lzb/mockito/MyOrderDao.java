@@ -17,4 +17,7 @@ public class MyOrderDao {
         System.out.println("doDelete");
     }
 
+    public Order get(long id) {
+        return new Order();
+    }
 }
