@@ -18,6 +18,8 @@ public class MyOrderDao {
     }
 
     public Order get(long id) {
-        return new Order();
+        Order order = new Order();
+        order.cancel();
+        return order;
     }
 }

@@ -2,6 +2,7 @@ package com.lzb.mockito;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
@@ -87,6 +89,20 @@ class MyOrderServiceTest {
 		myOrderService.deleteById("a");
 
 		verify(orderMock).cancel();
+	}
+
+	@Test
+	void should_test_inner_return_value() {
+
+		when(myOrderDao.get(anyLong())).then(invocationOnMock -> {
+			Order o = (Order) invocationOnMock.callRealMethod();
+			System.out.println("dao执行的方法返回值:");
+			System.out.println(JSON.toJSONString(o));
+			return o;
+		});
+		// 模拟内部 Order 行为
+		myOrderService.deleteById("a");
+
 	}
 
 }
