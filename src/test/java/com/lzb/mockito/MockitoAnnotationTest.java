@@ -10,16 +10,20 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -356,6 +360,19 @@ public class MockitoAnnotationTest {
         Assertions.assertAll(Stream.<Executable>of(
                 () -> assertTrue(true),
                 () -> assertFalse(false)));
+    }
+
+    @org.junit.jupiter.api.Test
+    void should_1() {
+        String dateTimeStr = "2021-12-31T23:59:59";
+        LocalDateTime targetLocalDateTime1 = LocalDateTime.parse(dateTimeStr);
+        LocalDateTime targetLocalDateTime2 = LocalDateTime.parse(dateTimeStr);
+        try (MockedStatic<LocalDateTime> mocked = Mockito.mockStatic(LocalDateTime.class)) {
+            mocked.when(LocalDateTime::now).thenReturn(targetLocalDateTime1);
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println(now);
+            assertEquals(targetLocalDateTime2, now);
+        }
     }
 
 }
