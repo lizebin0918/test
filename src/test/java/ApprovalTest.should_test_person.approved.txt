@@ -1,0 +1,1 @@
+ApprovalTest.Person(age=10, name=naem)
