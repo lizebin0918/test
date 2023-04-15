@@ -1,6 +1,11 @@
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
@@ -9,7 +14,19 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.approvaltests.ApprovalUtilities;
 import org.approvaltests.Approvals;
+import org.approvaltests.combinations.CombinationApprovals;
+import org.approvaltests.core.ApprovalWriter;
+import org.junit.jupiter.api.DynamicContainer;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.function.ThrowingConsumer;
+import org.mockito.ArgumentCaptor;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * <br/>
@@ -56,6 +73,77 @@ public class ApprovalTest {
 		personService.test(new Person(1, "name"));
 
 		Approvals.verify(SystemOutUtils.convert(output));
+	}
+
+	public static String myMethod(int arg) {
+		if (arg <= 0) {
+			return "less or equal than zero";
+		} else if (arg % 2 == 0) {
+			return "even";
+		} else {
+			return "odd";
+		}
+	}
+
+	@Test
+	void test_combination_appraoval() {
+		CombinationApprovals.verifyAllCombinations(
+				ApprovalTest::myMethod, // 测试方法
+				new Integer[] {-1, 0, 1, 2} // 参数列表
+		);
+	}
+
+	@Test
+	void test_combination_appraoval_1() {
+		CombinationApprovals.verifyBestCoveringPairs(
+				ApprovalTest::myMethod, // 测试方法
+				new Integer[] {-1, 0, 1, 2} // 参数列表
+		);
+	}
+
+	@TestFactory
+	Stream<DynamicTest> generateTestCases(){
+
+		Stream<Integer> inputStream = IntStream.range(0, 10).boxed();
+		Function<Integer, String> displayName = input -> "Test input: " + input + " should be smaller than 10";
+		ThrowingConsumer<Integer> testExecutor = input -> assertTrue(input < 10);
+
+		return DynamicTest.stream(inputStream.iterator(), displayName, testExecutor);
+	}
+
+	@TestFactory
+	Collection<DynamicTest> dynamicTestsFromCollection() {
+		// 自己在外层做笛卡尔乘积？排列组合所有情况，返回一个List
+		return Arrays.asList(
+				dynamicTest("1st dynamic test", () -> assertTrue(Objects.nonNull(1))),
+				dynamicTest("2nd dynamic test", () -> assertTrue(Objects.nonNull(1)))
+		);
+	}
+
+
+	@TestFactory
+	DynamicContainer dynamicTestsFromStream() {
+		return DynamicContainer.dynamicContainer("DynamicContainer",
+				Stream.of(
+						DynamicTest.dynamicTest("1st container test",
+								() -> assertTrue(Objects.nonNull(1))),
+						DynamicTest.dynamicTest("2nd container test",
+								() -> assertTrue(Objects.nonNull(1))
+						)));
+	}
+
+
+	void should_(ApprovalWriter writer) {
+
+		PersonService personService = mock(PersonService.class);
+
+		ArgumentCaptor<Person> argumentCaptor = ArgumentCaptor.forClass(Person.class);
+
+		personService.test(new Person());
+
+		verify(personService).test(argumentCaptor.capture());
+
+
 	}
 
 	@Data

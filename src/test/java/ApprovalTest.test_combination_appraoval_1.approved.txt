@@ -1,0 +1,6 @@
+Testing an optimized 4/4 scenarios:
+
+[-1] => less or equal than zero 
+[0] => less or equal than zero 
+[1] => odd 
+[2] => even 
