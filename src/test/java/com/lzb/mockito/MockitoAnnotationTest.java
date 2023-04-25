@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
+ * 这是junit4用法
  * 使用mockito
  * 1.@RunWith(MockitoJUnitRunner.class)
  * 2.MockitoAnnotations.initMocks(this); and @Mock
@@ -124,7 +126,7 @@ public class MockitoAnnotationTest {
         String result = iterator.next() + " " + iterator.next() + " " + iterator.next();
         //验证结果
         System.out.println("result = " + result);
-        Assertions.assertEquals("hello world world", result);
+        assertEquals("hello world world", result);
     }
 
     /**
@@ -149,7 +151,7 @@ public class MockitoAnnotationTest {
     @Test
     public void test_how_to_use_stubbing() {
         when(list.get(0)).thenReturn("first");
-        Assertions.assertEquals(list.get(0), "first");
+        assertEquals(list.get(0), "first");
 
         when(list.get(anyInt())).thenThrow(new RuntimeException());
         try {
@@ -157,7 +159,7 @@ public class MockitoAnnotationTest {
             // 如果没有抛异常则执行失败
             Assertions.fail();
         } catch (Exception e) {
-            Assertions.assertEquals(e.getClass(), RuntimeException.class);
+            assertEquals(e.getClass(), RuntimeException.class);
         }
 
     }
@@ -177,8 +179,8 @@ public class MockitoAnnotationTest {
         doReturn("first").when(list).get(0);
         when(list.get(1)).thenReturn("second");
 
-        Assertions.assertEquals(list.get(0), "first");
-        Assertions.assertEquals(list.get(1), "second");
+        assertEquals(list.get(0), "first");
+        assertEquals(list.get(1), "second");
 
     }
 
@@ -360,6 +362,17 @@ public class MockitoAnnotationTest {
         Assertions.assertAll(Stream.<Executable>of(
                 () -> assertTrue(true),
                 () -> assertFalse(false)));
+    }
+
+    public static String a() {
+        return "a";
+    }
+
+    @Test
+    public void test_static_method() {
+        MockedStatic<MockitoAnnotationTest> mockedStatic = mockStatic(MockitoAnnotationTest.class);
+        mockedStatic.when(() -> MockitoAnnotationTest.a()).thenReturn("b");
+        assertEquals("b", MockitoAnnotationTest.a());
     }
 
     @org.junit.jupiter.api.Test
