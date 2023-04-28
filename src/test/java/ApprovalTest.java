@@ -1,4 +1,8 @@
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -8,20 +12,27 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.approvaltests.ApprovalUtilities;
 import org.approvaltests.Approvals;
+import org.approvaltests.JsonApprovals;
+import org.approvaltests.approvers.FileApprover;
 import org.approvaltests.combinations.CombinationApprovals;
 import org.approvaltests.core.ApprovalWriter;
+import org.approvaltests.core.Options;
+import org.approvaltests.core.VerifyResult;
+import org.json.JSONException;
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 import org.mockito.ArgumentCaptor;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
@@ -33,6 +44,7 @@ import static org.mockito.Mockito.verify;
  * Created on : 2023-01-08 09:49
  * @author mac
  */
+@Slf4j
 public class ApprovalTest {
 
 	@Test
@@ -130,6 +142,33 @@ public class ApprovalTest {
 						DynamicTest.dynamicTest("2nd container test",
 								() -> assertTrue(Objects.nonNull(1))
 						)));
+	}
+
+	@Test
+	void should_compare_with_json() {
+		Map<String, String> map1 = Maps.newLinkedHashMap();
+		map1.put("2", "2");
+		map1.put("1", "1");
+		// JsonApprovals.verifyJson(Fastjson2Utils.toJSONString(map1));
+
+		Options options = new Options();
+		options = options.withComparator((actualFile, exceptFile) -> {
+			if (!exceptFile.exists()) {
+				return FileApprover.approveTextFile(actualFile, exceptFile);
+			}
+			try {
+				String actualString = Files.readString(Paths.get(actualFile.getAbsolutePath()));
+				String expectString = Files.readString(Paths.get(exceptFile.getAbsolutePath()));
+				JSONAssert.assertEquals(expectString, actualString, false);
+				return VerifyResult.SUCCESS;
+			} catch (IOException | JSONException e) {
+				log.info("json断言异常", e);
+				return VerifyResult.FAILURE;
+			}
+		});
+
+		JsonApprovals.verifyJson(JSON.toJSONString(map1), options);
+
 	}
 
 
