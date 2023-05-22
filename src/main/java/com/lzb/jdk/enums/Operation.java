@@ -29,6 +29,12 @@ public enum Operation {
 		}
 	};
 
+	/**
+	 * 枚举声明抽象方法
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public abstract double apply(double x, double y);
 
 	/**
