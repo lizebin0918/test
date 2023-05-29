@@ -13,6 +13,9 @@ public class Main {
     public static void main(String[] args) {
         OrderRepository orderRepository = new OrderRepository();
         orderRepository.add(new Order());
+        orderRepository.update(new Order());
+
+
     }
 
 }

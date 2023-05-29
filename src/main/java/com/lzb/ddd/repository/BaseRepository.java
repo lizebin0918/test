@@ -29,6 +29,8 @@ public abstract class BaseRepository<R> implements AddRepository<R> {
 
     protected abstract LongSupplier doAdd(R r);
 
+    protected abstract Runnable doUpdate(R r);
+
     @Override
     public final long add(R r) {
         System.out.println("before add");
@@ -39,5 +41,9 @@ public abstract class BaseRepository<R> implements AddRepository<R> {
         });
         System.out.println("after add");
         return id.get();
+    }
+
+    public void update(R r) {
+        transactionHelper.execute(doUpdate(r));
     }
 }

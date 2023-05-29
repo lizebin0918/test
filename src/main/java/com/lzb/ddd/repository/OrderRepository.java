@@ -17,4 +17,12 @@ public class OrderRepository extends BaseRepository<Order> implements AddReposit
         };
     }
 
+    @Override
+    protected Runnable doUpdate(Order order) {
+        System.out.println("before doUpdate");
+        return () -> {
+            System.out.println("execute doUpdate");
+        };
+    }
+
 }
