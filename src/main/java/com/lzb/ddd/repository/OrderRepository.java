@@ -1,5 +1,7 @@
 package com.lzb.ddd.repository;
 
+import java.util.function.LongSupplier;
+
 /**
  * <br/>
  * Created on : 2023-05-21 09:47
@@ -7,8 +9,12 @@ package com.lzb.ddd.repository;
  */
 public class OrderRepository extends BaseRepository<Order> implements AddRepository<Order> {
     @Override
-    protected Runnable doAdd(Order order) {
-        return () -> System.out.println("execute doAdd");
+    protected LongSupplier doAdd(Order order) {
+        System.out.println("before doAdd");
+        return () -> {
+            System.out.println("execute doAdd");
+            return 1L;
+        };
     }
 
 }

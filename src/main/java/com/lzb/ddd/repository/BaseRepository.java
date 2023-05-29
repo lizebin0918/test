@@ -1,5 +1,8 @@
 package com.lzb.ddd.repository;
 
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.LongSupplier;
+
 import javax.annotation.Resource;
 
 import lombok.Setter;
@@ -22,13 +25,19 @@ public abstract class BaseRepository<R> implements AddRepository<R> {
     @Resource
     protected OperationLogSupport operationLogSupport;*/
 
-    protected abstract Runnable doAdd(R r);
+    protected TransactionHelper transactionHelper = new TransactionHelper();
+
+    protected abstract LongSupplier doAdd(R r);
 
     @Override
     public final long add(R r) {
         System.out.println("before add");
-        doAdd(r).run();
+        AtomicReference<Long> id = new AtomicReference<>();
+        LongSupplier longSupplier = doAdd(r);
+        transactionHelper.execute(() -> {
+            id.set(longSupplier.getAsLong());
+        });
         System.out.println("after add");
-        return 0;
+        return id.get();
     }
 }
