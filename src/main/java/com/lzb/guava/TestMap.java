@@ -1,6 +1,7 @@
 package com.lzb.guava;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 /**
@@ -21,6 +22,15 @@ public class TestMap {
         multimap.put(2, "猴哥");
 
         System.out.println(multimap);
+
+        // <String>
+        ImmutableSetMultimap<String, String> setMap = ImmutableSetMultimap.<String, String>builder()
+                .put("1", "1")
+                .put("2", "2")
+                .put("1", "3")
+                .build();
+        System.out.println(setMap);
+        System.out.println(setMap.get("1"));
 
     }
 
