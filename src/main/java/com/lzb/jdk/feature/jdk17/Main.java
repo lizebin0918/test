@@ -1,5 +1,8 @@
 package com.lzb.jdk.feature.jdk17;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -16,7 +19,17 @@ public class Main {
      * @param name
      * @param age
      */
-    public record User(long id, String name, int age) {
+    public record User(long id,
+
+                       @NotBlank(message = "Your project needs a name.")
+                       @Size(min = 3, max = 30)
+                       String name,
+
+                       int age) {
+
+        User(long id) {
+            this(id, null, 0);
+        }
 
     };
 
@@ -30,6 +43,7 @@ public class Main {
         instanceOf(liagnwanyi);
 
         User lizebin1 = new User(1, "lizebin", 18);
+        System.out.println(lizebin1.age);
 
     }
 
