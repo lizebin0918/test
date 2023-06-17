@@ -27,7 +27,7 @@ public class MyStringUtils {
         LinkedHashSet<String> result = new LinkedHashSet<>();
         int startIdx = sourceString.indexOf(start);
         int stopIdx = sourceString.indexOf(end);
-        while (startIdx != -1 && stopIdx != -1 && startIdx < stopIdx) {
+        while (startIdx != -1 && stopIdx != -1 && startIdx < stopIdx && stopIdx < sourceString.length()) {
             String variable = sourceString.substring(startIdx + 2, stopIdx);
             result.add(variable);
             startIdx = sourceString.indexOf(start, stopIdx + 1);
