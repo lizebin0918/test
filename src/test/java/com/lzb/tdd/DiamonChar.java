@@ -1,9 +1,10 @@
 package com.lzb.tdd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
+import com.google.errorprone.annotations.Var;
 import lombok.Getter;
 
 /**
@@ -14,30 +15,49 @@ import lombok.Getter;
 @Getter
 public class DiamonChar {
 
-    private final char startChar;
+    private final char endChar;
 
-    public static final char END_CHAR = 'A';
+    public static final char START_CHAR = 'A';
 
     public static final String DOT = ".";
 
     public DiamonChar(char startChar) {
-        this.startChar = startChar;
+        this.endChar = startChar;
     }
 
     List<String> diamonPrint() {
         int length = length();
         List<String> lines = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            lines.add(line(startChar, i, 'a'));
+        char tempStartChar = START_CHAR;
+        int middle = (length / 2);
+        for (int i = 0; i <= middle; i++) {
+            lines.add(line(tempStartChar));
+            tempStartChar++;
         }
-        return List.of("A");
+        return reverseAppend(lines, 0, middle);
     }
 
-    static String line(char startChar, int length, char targetChar) {
+    /**
+     * 翻转append
+     * @param lines
+     * @param start
+     * @param end
+     * @return
+     */
+    List<String> reverseAppend(List<String> lines, int start, int end) {
+        List<String> newLines = new ArrayList<>(lines);
+        List<String> reverseSubLines = new ArrayList<>(newLines.subList(start, end));
+        Collections.reverse(reverseSubLines);
+        newLines.addAll(reverseSubLines);
+        return newLines;
+    }
+
+    String line(char currentChar) {
         StringBuilder line = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            if (Math.abs(startChar - i) == targetChar) {
-                line.append(targetChar);
+        int middle = length() / 2;
+        for (int i = -middle; i <= middle; i++) {
+            if (Math.abs(i) == (currentChar - START_CHAR)) {
+                line.append(currentChar);
                 continue;
             }
             line.append(DOT);
@@ -49,8 +69,8 @@ public class DiamonChar {
      * 边长
      * @return
      */
-    private int length() {
-        int length = (END_CHAR - startChar) * 2 - 1;
+    int length() {
+        int length = (endChar - START_CHAR) * 2 + 1;
         return length;
     }
 }
