@@ -52,10 +52,19 @@ class DiamonCharTest {
     @Test
     void should_return_when_input_B() {
         DiamonChar diamonCharB = new DiamonChar('B');
-        Assertions.assertEquals(3, diamonCharB.length());
+        Assertions.assertEquals(length(3), diamonCharB.length());
 
         DiamonChar diamonCharC = new DiamonChar('C');
-        Assertions.assertEquals(5, diamonCharC.length());
+        Assertions.assertEquals(length(5), diamonCharC.length());
+    }
+
+    /**
+     * 边长
+     * @param length
+     * @return
+     */
+    private int length(int length) {
+        return length;
     }
 
     @Test
