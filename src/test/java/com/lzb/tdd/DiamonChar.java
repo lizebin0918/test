@@ -2,6 +2,7 @@ package com.lzb.tdd;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 
@@ -27,11 +28,21 @@ public class DiamonChar {
         int length = length();
         List<String> lines = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
-
-            lines.add(line(startChar, END_CHAR, currentChar))
-
+            lines.add(line(startChar, i, 'a'));
         }
         return List.of("A");
+    }
+
+    static String line(char startChar, int length, char targetChar) {
+        StringBuilder line = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            if (Math.abs(startChar - i) == targetChar) {
+                line.append(targetChar);
+                continue;
+            }
+            line.append(DOT);
+        }
+        return line.toString();
     }
 
     /**
