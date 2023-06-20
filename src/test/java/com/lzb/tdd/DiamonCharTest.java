@@ -11,6 +11,12 @@ import static org.mockito.Mockito.spy;
 
 /**
  * 题目：Print Diamond
+ * 思路：https://jaroslawpawlak.wordpress.com/2015/01/17/diamond-kata/
+ *
+ * 先设计
+ * 拆分成行，完成上半部分
+ * 最后逆序append
+ *
  *
  * This is the print diamond for 'E'.
  *
