@@ -40,6 +40,14 @@ public class TestMap {
         });*/
 
         //computeIfPresent:key不存在才会计算
+        // computeIfAbsent 和 putIfAbsent 区别
+        /*
+        Java Map 接口中的 computeIfAbsent() 和 putIfAbsent() 方法都是用于向 Map 中添加元素的方法，但它们之间有以下区别：
+        1. 参数不同：computeIfAbsent() 方法需要传入一个 Function 接口类型的参数，该参数用于计算新值；而 putIfAbsent() 方法需要传入一个键和一个值。
+        2. 返回值不同：computeIfAbsent() 方法返回计算出的新值，如果 Map 中已经存在该键，则返回已有的值；而 putIfAbsent() 方法返回插入的值，如果 Map 中已经存在该键，则返回已有的值。
+        3. 用途不同：computeIfAbsent() 方法用于在 Map 中不存在指定键时计算新值并插入到 Map 中；而 putIfAbsent() 方法用于在 Map 中不存在指定键时插入一个指定的键值对。
+        总之，computeIfAbsent() 方法更适合用于需要计算新值的场景，而 putIfAbsent() 方法更适合用于插入指定的键值对的场景。
+         */
         Integer d = map.computeIfAbsent("z", (k) -> {
             System.out.println("123");
             return 5;
