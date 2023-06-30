@@ -1,5 +1,7 @@
 package com.lzb.jdk.feature.jdk17;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -31,7 +33,26 @@ public class Main {
             this(id, null, 0);
         }
 
-    };
+    }
+
+    /**
+     * https://mikemybytes.com/2022/02/16/java-records-and-compact-constructors/
+     * @param value
+     * @param unit
+     */
+    public record UnitChange(int value, String unit) {
+
+
+    /*public UnitChange(int value, Unit unit) {
+        Objects.requireNonNull(unit);
+        this.value = value;
+        this.unit = unit;
+    }*/
+
+        public UnitChange {
+            Objects.requireNonNull(unit);
+        }
+    }
 
     public static void main(String[] args) {
         PersonDto lizebin = new PersonDto("lizebin", 18);
