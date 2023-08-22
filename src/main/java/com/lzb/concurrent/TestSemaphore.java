@@ -27,8 +27,9 @@ public class TestSemaphore {
             }).start();
         }
 
-
+        System.out.println("main start sleep");
         Thread.sleep(1000);
+        System.out.println("main end sleep");
         semaphore.release(count);
 
     }
