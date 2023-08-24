@@ -1,7 +1,11 @@
 package com.lzb.mockito.test_lambda;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +37,8 @@ class CompletableFutureTest {
                 return null;
             }));
             completableFuture.when(() -> CompletableFuture.supplyAsync(any(Supplier.class))).thenAnswer((invocation -> {
-                Object supplierValue = invocation.getArgument(0, Supplier.class).get();
+                Object supplierValue = invocation.getArgument(0, Supplier.class)
+                        .get();
                 CompletableFuture<Object> f = mock(CompletableFuture.class);
                 // 用spy无效
                 //CompletableFuture<Object> f = spy(CompletableFuture.class);
@@ -84,7 +89,8 @@ class CompletableFutureTest {
                 return null;
             }));
             completableFuture.when(() -> CompletableFuture.supplyAsync(any(Supplier.class))).thenAnswer((invocation -> {
-                Object supplierValue = invocation.getArgument(0, Supplier.class).get();
+                Object supplierValue = invocation.getArgument(0, Supplier.class)
+                        .get();
                 return CompletableFuture.completedFuture(supplierValue);
             }));
 
@@ -97,6 +103,18 @@ class CompletableFutureTest {
                 return 1;
             }).join();
             Assertions.assertEquals(1, i);
+
+            int r = CompletableFuture
+                    .supplyAsync(() -> {
+                        System.out.println(Thread.currentThread().getName() + " 1 ");
+                        return 1;
+                    })
+                    .thenCombine(CompletableFuture.supplyAsync(() -> {
+                                System.out.println(Thread.currentThread().getName() + " 2 ");
+                                return 2;
+                            }),
+                            (j, k) -> j + k).join();
+            Assertions.assertEquals(3, r);
         }
     }
 
