@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TestScheduledThreadPoolExecutor {
 
-    static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(16);
+    static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName() + "current time:" + LocalDateTime.now());
@@ -35,7 +35,7 @@ public class TestScheduledThreadPoolExecutor {
             }
         }, 0, 1, TimeUnit.SECONDS);
 
-        // 按照任务执行 + 固定时间执行
+        // 按照任务执行 + 固定时间执行。如果有一个任务异常，后面的任务不会执行，参考：ScheduledTask
         scheduledExecutorService.scheduleWithFixedDelay(() -> {
             System.out.println(Thread.currentThread().getName() + " execute with fixed delay : " + LocalDateTime.now()
                     .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
@@ -58,7 +58,8 @@ public class TestScheduledThreadPoolExecutor {
     private static void execute(int... seconds) {
         for (int second : seconds) {
             scheduledExecutorService.schedule(() -> {
-                System.out.println("execute " + second + " seconds later");
+                System.out.println(Thread.currentThread().getName() + " execute " + second + " seconds later");
+                throw new RuntimeException();
             }, second, TimeUnit.SECONDS);
         }
     }
