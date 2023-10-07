@@ -18,10 +18,10 @@ import java.util.concurrent.TimeUnit;
 public class TestScheduledThreadPoolExecutor {
 
     public static void main(String[] args) throws InterruptedException {
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(16);
         System.out.println(Thread.currentThread().getName() + "current time:" + LocalDateTime.now());
         // 延迟5秒后执行
-        scheduledExecutorService.schedule(() -> System.out.println(LocalDateTime.now()), 5, TimeUnit.SECONDS);
+        scheduledExecutorService.schedule(() -> System.out.println("delay execute :" + LocalDateTime.now()), 5, TimeUnit.SECONDS);
 
         // 按照时间点执行
         scheduledExecutorService.scheduleAtFixedRate(() -> {
