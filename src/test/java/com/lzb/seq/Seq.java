@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 
 
 /**
+ * https://mp.weixin.qq.com/s/v-HMKBWxtz1iakxFL09PDw
  * A负责产出数据，B负责使用数据。A不关心B怎么处理数据，可能要先过滤一些，进行聚合后再做计算，
  * 也可能是写到某个本地或者远程的存储；B自然也不关心A的数据是怎么来的。这里边唯一的问题在于，
  * 数据条数实在是太多了，内存一次性放不下。在这种情况下，传统的做法是让A提供一个带回调函数consumer的接口，
