@@ -21,9 +21,11 @@ public class TryTest {
                 });
 
         // 正常调用
-        Try.ofSupplier(() -> 1)
+        Integer result = Try.ofSupplier(() -> 1)
                 .andThen(r -> System.out.println("and then 1 = " + (r + 1)))
-                .andThen(r -> System.out.println("and then 2 = " + r));
+                .andThen(r -> System.out.println("and then 2 = " + r))
+                .get();
+        System.out.println(result);
 
     }
 
