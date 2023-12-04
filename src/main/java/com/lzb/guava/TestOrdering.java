@@ -25,6 +25,9 @@ public class TestOrdering {
     @Data
     @AllArgsConstructor
     public static class Foo {
+        /**
+         * 排序
+         */
         private String sortedBy;
         private int notSortedBy;
     }

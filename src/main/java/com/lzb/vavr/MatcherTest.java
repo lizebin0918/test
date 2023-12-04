@@ -1,9 +1,16 @@
 package com.lzb.vavr;
 
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSON;
 import io.vavr.control.Option;
 import lombok.Data;
 
@@ -55,6 +62,13 @@ public class MatcherTest {
                 Case($(), "child"));
         System.out.println(person);
 
+        int i1 = 1;
+        Optional<?> i1Value = Match(i1).of(
+                Case($(), Optional.empty()),
+                Case($(1), o -> Optional.of("one"))
+        );
+        System.out.println(i1Value.isPresent());
+
     }
 
     /*public Result allowChangeSku1(Long detailId, PackageVal detailPackage) {
@@ -73,4 +87,5 @@ public class MatcherTest {
     private static class Person {
         private int age;
     }
+
 }
