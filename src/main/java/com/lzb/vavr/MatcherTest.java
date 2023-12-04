@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -69,6 +70,20 @@ public class MatcherTest {
         );
         System.out.println(i1Value.isPresent());
 
+        Optional<String> number = Optional.ofNullable(get1()).or(() -> Optional.ofNullable(get()));
+        System.out.println(number.isPresent());
+        System.out.println(number.get());
+
+    }
+
+    private static String get1() {
+        System.out.println("get1");
+        return "1";
+    }
+
+    private static String get() {
+        System.out.println("get");
+        return null;
     }
 
     /*public Result allowChangeSku1(Long detailId, PackageVal detailPackage) {
@@ -83,9 +98,14 @@ public class MatcherTest {
         );
     }*/
 
+    public static Optional<String> checkForPerson(Person person) {
+        return null;
+    }
+
     @Data
     private static class Person {
         private int age;
+        private String name;
     }
 
 }
