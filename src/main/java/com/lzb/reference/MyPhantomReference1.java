@@ -1,15 +1,15 @@
 package com.lzb.reference;
-
+/*
 import jdk.internal.ref.Cleaner;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 
-/**
+*//**
  * 虚引用回收时机，一旦没有其他更上层的引用指向就会被回收?<br/>
  * Created on : 2021-06-27 20:00
  *
  * @author lizebin
- */
+ *//*
 public class MyPhantomReference1 {
 
     private static volatile Person p = new Person();
@@ -24,10 +24,10 @@ public class MyPhantomReference1 {
                     Thread.sleep(1000);
                     System.out.println(p);
                     //回收不会入队(enqueued)，那就只能从ReferenceHandler的线程，从pending队列里面取？
-                    /*Reference<? extends Person> ref = q.poll();
+                    *//*Reference<? extends Person> ref = q.poll();
                     if (ref != null) {
                         System.out.println("被回收：" + ref.get());
-                    }*/
+                    }*//*
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -49,4 +49,4 @@ public class MyPhantomReference1 {
         });
     }
 
-}
+}*/
