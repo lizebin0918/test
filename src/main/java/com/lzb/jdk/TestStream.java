@@ -1,15 +1,15 @@
 package com.lzb.jdk;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ForkJoinPool;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 新特性<br/>
@@ -66,6 +66,8 @@ public class TestStream {
         System.out.println(l1.stream().peek(System.out::println).count());
 
         System.out.println(splitToSet("1,2,3,4"));
+
+        jdk17();
     }
 
     /**
@@ -91,4 +93,24 @@ public class TestStream {
             .map(Long::valueOf)
             .collect(Collectors.toSet());
     }
+
+    /**
+     * jdk17 新特性
+     */
+    public static void jdk17() {
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+
+        Stream<Integer> stream = numbers.stream()
+            .mapMulti((Integer number, Consumer<Integer> consumer) -> {
+                if (number % 2 == 0) {
+                    consumer.accept(number * 2);
+                } else {
+                    consumer.accept(number);
+                    consumer.accept(number * 3);
+                }
+            });
+
+        stream.forEach(System.out::println);
+    }
+
 }
